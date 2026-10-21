@@ -90,6 +90,7 @@ Site de saúde em linguagem simples. Projeto escolar (protótipo), sucessor do E
 - [ ] Conferir equipe/e-mail do rodapé (copiados do ExamIA)
 - [ ] Data da apresentação (ainda não informada)
 - [x] Primeiro commit (20/10/2026)
+- [x] GitHub: https://github.com/Meloo-00/Saudezen (branch main, push em 21/10/2026)
 - [x] Doenças detalhadas: como se pega + o que ajuda em casa (sem seção de sintomas, decisão do usuário)
 
 ## Próxima sessão: começar por aqui (anotado em 21/10/2026)
