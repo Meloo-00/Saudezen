@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aviso | Saudezen</title>
+  <meta name="description" content="O Saudezen é um projeto escolar: não faz diagnóstico, pode errar e não substitui o médico. Veja os limites do site e como cuidamos dos seus dados.">
+  <meta name="theme-color" content="#F5F6F0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Mono:wght@400;500&family=Atkinson+Hyperlegible+Next:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/estilo.css">
+  <!-- Avisa ao CSS que o JavaScript está funcionando (só assim as animações escondem as coisas antes de aparecer) -->
+  <script>document.documentElement.classList.add('js');</script>
+</head>
+<body>
+
+  <!-- Células decorativas nas laterais (ficam atrás de tudo) -->
+  <div class="decoracao" aria-hidden="true">
+    <img class="celula aviso-cel-1 desenhar" src="imagens/celula-lateral.webp" alt="" width="700" height="700">
+    <img class="celula aviso-cel-2 desenhar" src="imagens/celula2-b-lateral.webp" alt="" width="443" height="525">
+    <img class="celula aviso-cel-3 desenhar" src="imagens/celula2-c-lateral.webp" alt="" width="359" height="500" loading="lazy">
+    <img class="celula aviso-cel-4 desenhar" src="imagens/celula2-d-lateral.webp" alt="" width="600" height="248" loading="lazy">
+  </div>
+
+  <a class="pular" href="#conteudo">Pular para o conteúdo</a>
+
+  <!-- Topo com o menu (igual em todas as páginas) -->
+  <header class="topo">
+    <nav class="menu container" aria-label="Menu principal">
+      <a class="logo" href="index.html" translate="no">
+        <span class="logo-marca" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 20h10"/><path d="M10 20c5.5-2.5.8-6.4 3-10"/><path d="M9.5 9.4c1.1.8 1.8 2.2 2.3 3.7-2 .4-3.5.4-4.8-.3-1.2-.6-2.3-1.9-3-4.2 2.8-.5 4.4 0 5.5.8z"/><path d="M14.1 6a7 7 0 0 0-1.1 4c1.9-.1 3.3-.6 4.3-1.4 1-1 1.6-2.3 1.7-4.6-2.7.1-4 1-4.9 2z"/></svg></span>
+        Saudezen
+      </a>
+
+      <button class="menu-botao" type="button" aria-expanded="false" aria-controls="menu-links">
+        <svg class="icone icone-abrir" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+        <svg class="icone icone-fechar" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
+        Menu
+      </button>
+
+      <ul class="menu-links" id="menu-links">
+        <li><a href="index.html">Início</a></li>
+        <li><a href="doencas.html">Doenças de A a Z</a></li>
+        <li><a href="aviso.html" aria-current="page">Aviso</a></li>
+        <li><a href="entrar.html" data-conta>Entrar</a></li>
+        <li><a class="btn" href="analise.html">Analisar exame</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main id="conteudo">
+    <div class="container">
+
+      <header class="cabeca-pagina">
+        <h1 class="revelar">Antes de usar, <span class="tom">leia com calma</span></h1>
+        <p class="revelar" style="--atraso: 0.15s">O Saudezen ajuda você a entender exames e doenças. Mas ele tem limites, e é importante conhecer cada um.</p>
+      </header>
+
+      <div class="aviso-grade">
+        <nav class="sumario revelar" style="--atraso: 0.25s" aria-labelledby="titulo-sumario">
+          <h2 id="titulo-sumario">Nesta página</h2>
+          <ul>
+            <li><a href="#nao-somos-medicos">Não somos médicos</a></li>
+            <li><a href="#a-ia-pode-errar">A IA pode errar</a></li>
+            <li><a href="#seus-dados">Seus dados</a></li>
+            <li><a href="#quando-procurar">Quando procurar um médico</a></li>
+          </ul>
+        </nav>
+
+        <div class="aviso-texto">
+
+          <section class="aviso-bloco" id="nao-somos-medicos" aria-labelledby="titulo-medicos">
+            <h2 id="titulo-medicos">Não somos médicos</h2>
+            <p><strong>O Saudezen é um projeto escolar</strong> feito por estudantes do ITB Brasílio Flores de Azevedo (FIEB). Ele usa inteligência artificial para explicar o que os valores do hemograma <em>podem</em> indicar, e resume informações sobre doenças a partir das páginas do Ministério da Saúde.</p>
+            <p><strong>Ele não dá diagnóstico.</strong> Um mesmo valor pode ter várias causas, e muitas delas não são problema nenhum. Só o médico junta o exame com os seus sintomas, o seu histórico e outros exames.</p>
+
+            <div class="comparacao">
+              <div class="comparacao-site">
+                <h3>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+                  O Saudezen pode
+                </h3>
+                <ul>
+                  <li>Explicar o que cada item do hemograma mede</li>
+                  <li>Mostrar se um valor está dentro ou fora da referência</li>
+                  <li>Explicar doenças em palavras simples</li>
+                  <li>Ajudar você a pensar em perguntas para a consulta</li>
+                </ul>
+              </div>
+              <div class="comparacao-medico">
+                <h3>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                  Só o médico pode
+                </h3>
+                <ul>
+                  <li>Dizer se você tem alguma doença</li>
+                  <li>Pedir outros exames</li>
+                  <li>Indicar remédio ou tratamento</li>
+                </ul>
+              </div>
+            </div>
+          </section>
+
+          <section class="aviso-bloco aviso-erro" id="a-ia-pode-errar" aria-labelledby="titulo-errar">
+            <div class="aviso-erro-arte arte revelar" style="--atraso: 0.2s" aria-hidden="true">
+              <img src="imagens/microscopio-site.webp" alt="" width="600" height="600" loading="lazy">
+            </div>
+            <h2 id="titulo-errar">A IA pode errar</h2>
+            <p><strong>A inteligência artificial não é perfeita.</strong> Ela pode ler um número errado, principalmente de uma foto borrada, escura ou torta. Também pode explicar algo de um jeito incompleto.</p>
+            <p><strong>Por isso, confira sempre</strong> os valores do resultado com o papel do exame. Se algo estiver diferente, vale o que está no exame.</p>
+            <h3>Para a IA ler bem a sua foto</h3>
+            <ul>
+              <li>Use um lugar bem iluminado, sem sombra em cima do papel.</li>
+              <li>Deixe o papel reto e a câmera bem de frente para ele.</li>
+              <li>Mostre a tabela inteira, com os valores e as referências.</li>
+              <li>Se tiver o PDF do laboratório, prefira enviar o PDF.</li>
+            </ul>
+          </section>
+
+          <section class="aviso-bloco" id="seus-dados" aria-labelledby="titulo-dados">
+            <h2 id="titulo-dados">Seus dados</h2>
+            <p><strong>Seus exames nunca ficam guardados.</strong> O arquivo passa pelo site só para ser enviado à IA e gerar a explicação. O resultado some quando você fecha a página.</p>
+            <p><strong>A conta guarda só o seu e-mail.</strong> Ela existe para limitar o uso da IA, que é gratuita. A senha fica protegida no serviço de login (Supabase), e ninguém da equipe consegue vê-la.</p>
+            <p><strong>A IA é do Google (Gemini), no plano gratuito.</strong> Nesse plano, o Google pode usar o que é enviado para melhorar os serviços dele, e pessoas podem revisar esse conteúdo.</p>
+            <h3>Por isso, não envie exames com dados pessoais</h3>
+            <ul>
+              <li>Corte ou cubra o seu nome, CPF, data de nascimento, endereço e número do convênio.</li>
+              <li>Na foto, basta aparecer a tabela com os valores e as referências.</li>
+              <li>Se preferir, use o exame de exemplo que já vem no site.</li>
+            </ul>
+          </section>
+
+          <section class="aviso-bloco" id="quando-procurar" aria-labelledby="titulo-procurar">
+            <h2 id="titulo-procurar">Quando procurar um médico</h2>
+            <p><strong>Se algum valor estiver fora da referência</strong>, leve o exame a um profissional de saúde. Na maioria das vezes não é nada grave, mas só ele pode dizer.</p>
+            <p><strong>Mesmo com tudo dentro da referência</strong>, continue indo às consultas de rotina e conte ao médico se sentir algo diferente.</p>
+            <div class="urgente">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+              <p><strong>Está se sentindo mal agora?</strong> Não espere pelo site. Procure um pronto-atendimento ou ligue para o SAMU no <a href="tel:192">192</a>. Se estiver pensando em se machucar, ligue para o CVV no <a href="tel:188">188</a> (gratuito, 24 horas).</p>
+            </div>
+          </section>
+
+          <section class="aviso-fim" aria-labelledby="titulo-fim">
+            <h2 id="titulo-fim">Tudo certo?</h2>
+            <p>Se você entendeu os limites do Saudezen, pode enviar o seu exame.</p>
+            <a class="btn" href="analise.html">Analisar meu exame</a>
+          </section>
+
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Rodapé (igual em todas as páginas) -->
+  <footer class="rodape">
+    <div class="container">
+      <div class="rodape-grade">
+        <div>
+          <h2 translate="no">Saudezen</h2>
+          <p>Saúde explicada em palavras simples. Projeto escolar do ITB Brasílio Flores de Azevedo (FIEB).</p>
+        </div>
+        <nav aria-label="Páginas do site">
+          <h2>Páginas</h2>
+          <ul class="rodape-links">
+            <li><a href="index.html">Início</a></li>
+            <li><a href="doencas.html">Doenças de A a Z</a></li>
+            <li><a href="analise.html">Analisar exame</a></li>
+            <li><a href="aviso.html">Aviso</a></li>
+          </ul>
+        </nav>
+        <!-- TROCAR: confira se a equipe e o e-mail são os mesmos do ExamIA -->
+        <div>
+          <h2>Equipe</h2>
+          <ul>
+            <li>Ana Carolina Guimarães Alves</li>
+            <li>David Alexandre Ferreira Gonçalves</li>
+            <li>Eduardo Melo Gimenes</li>
+            <li>Fabiano Andrade Furlan Junior</li>
+          </ul>
+          <p><a href="mailto:rm98736@estudante.fieb.edu.br">rm98736@estudante.fieb.edu.br</a></p>
+        </div>
+      </div>
+      <p class="rodape-aviso"><strong>O Saudezen não faz diagnóstico</strong> e não substitui a consulta com um médico. Em caso de emergência, ligue para o SAMU no <a href="tel:192">192</a>.</p>
+      <p>© 2026 Saudezen</p>
+    </div>
+  </footer>
+
+  <script src="js/menu.js"></script>
+  <script src="js/conta.js"></script>
+  <script src="js/animacoes.js"></script>
+  <script src="js/desenho.js"></script>
+  <script src="js/sumario.js"></script>
+</body>
+</html>

@@ -1,0 +1,11 @@
+# Originais das imagens. O site usa só as versões geradas (*-site.png, celula-oliva.png).
+imagens/microscopio.png
+imagens/sangue.png
+imagens/celula-removebg-preview.png
+
+# Chaves e dependências: nunca vão para o GitHub
+.env
+.env.local
+.env*.local
+node_modules/
+.vercel/

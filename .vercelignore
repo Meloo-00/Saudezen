@@ -1,0 +1,6 @@
+# Arquivos que existem no GitHub, mas NÃO devem ficar públicos no site da Vercel
+CLAUDE.md
+docs/
+imagens/celula.jpg
+imagens/celula2.jpg
+img-teste/

@@ -1,0 +1,1741 @@
+/* =========================================================
+   Saudezen — estilo principal
+   Todas as cores, fontes e espaços ficam nas variáveis abaixo.
+   Para trocar uma cor no site inteiro, mude só aqui.
+   ========================================================= */
+
+:root {
+  /* Cores (contraste conferido: texto sempre 4,5:1 ou mais) */
+  --papel: #F5F6F0;          /* fundo da página: branco com um toque de sálvia */
+  --areia: #ECE7DA;          /* superfícies quentes (herança do bege do ExamIA) */
+  --cartao: #FDFDFA;         /* cards e campos */
+  --linha: #D9DDCF;          /* linhas e bordas de cards */
+  --linha-campo: #7F8975;    /* borda de campos (3:1, dá para ver onde clicar) */
+  --broto: #E2EAD5;          /* verde bem claro: destaque suave, selo "Normal" */
+  --salvia: #CBD5BC;
+  --folha: #3D5A32;          /* botão principal e links */
+  --folha-escura: #2C4324;   /* hover do botão, faixas escuras, rodapé */
+  --musgo: #4A6B37;          /* texto de destaque */
+  --broto-vivo: #4F7A35;     /* segunda cor dos títulos (4,6:1 no papel) */
+  --tinta: #1F2A1B;          /* texto */
+  --tinta-suave: #525B4B;    /* texto secundário (6,5:1 no papel) */
+  --ambar-fundo: #F6E4C0;    /* valor fora da referência: chama atenção sem assustar */
+  --ambar-texto: #774705;
+
+  /* Fontes: uma família só, feita para baixa visão; a Mono só nos valores de exame */
+  --fonte: 'Atkinson Hyperlegible Next', system-ui, sans-serif;
+  --fonte-mono: 'Atkinson Hyperlegible Mono', ui-monospace, monospace;
+
+  /* Tamanhos de texto (escala 1,25). Nada fica abaixo de 16px. */
+  --t-pequeno: 1rem;         /* 16px */
+  --t-base: 1.125rem;        /* 18px */
+  --t-medio: 1.375rem;       /* 22px */
+  --t-h3: 1.5rem;            /* 24px */
+  --t-h2: clamp(1.875rem, 1.4rem + 1.8vw, 2.75rem);
+  --t-h1: clamp(2.375rem, 1.6rem + 3.2vw, 3.75rem);
+
+  /* Espaços */
+  --e-1: 4px;  --e-2: 8px;  --e-3: 12px; --e-4: 16px; --e-5: 24px;
+  --e-6: 32px; --e-7: 48px; --e-8: 64px; --e-9: 96px;
+  --lateral: 20px;           /* respiro nas laterais da tela */
+
+  /* Cantos: maior no que é maior, para a hierarquia ficar clara */
+  --r-grande: 28px;
+  --r-medio: 18px;
+  --r-pequeno: 12px;
+
+  --altura-topo: 72px;
+  --suave: cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+/* ---------- Base ---------- */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  font-size: 100%;
+  -webkit-text-size-adjust: 100%;
+  scroll-padding-top: calc(var(--altura-topo) + 16px);  /* links para seções não ficam embaixo do topo */
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html { scroll-behavior: smooth; }
+}
+
+body {
+  margin: 0;
+  background: var(--papel);
+  color: var(--tinta);
+  font-family: var(--fonte);
+  font-size: var(--t-base);
+  line-height: 1.6;
+  -webkit-tap-highlight-color: rgba(61, 90, 50, 0.15);
+}
+
+h1, h2, h3, h4, p, ul, ol, dl, dd, figure { margin: 0; }
+h1, h2, h3, h4 { line-height: 1.15; text-wrap: balance; }
+p, li, dd { text-wrap: pretty; }
+img, svg { display: block; }
+button, input { font: inherit; color: inherit; }
+button { touch-action: manipulation; }
+
+a { color: var(--folha); text-underline-offset: 0.2em; text-decoration-thickness: 1px; }
+a:hover { text-decoration-thickness: 2px; }
+
+:focus-visible {
+  outline: 3px solid var(--folha);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+[hidden] { display: none !important; }
+
+/* Texto só para leitor de tela: existe, mas não aparece */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* "Pular para o conteúdo": aparece só quando recebe o foco pelo teclado */
+.pular {
+  position: absolute;
+  top: -100px;
+  left: var(--e-4);
+  z-index: 30;
+  padding: var(--e-3) var(--e-4);
+  border-radius: var(--r-pequeno);
+  background: var(--folha-escura);
+  color: #fff;
+  font-weight: 700;
+}
+.pular:focus { top: var(--e-3); }
+
+.container {
+  width: 100%;
+  max-width: 1160px;
+  margin: 0 auto;
+  padding: 0 var(--lateral);
+}
+
+.icone { width: 1.25em; height: 1.25em; flex-shrink: 0; }
+
+/* ---------- Botões ---------- */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--e-2);
+  min-height: 52px;
+  padding: 12px 24px;
+  border: 2px solid var(--folha);
+  border-radius: 999px;
+  background: var(--folha);
+  color: #fff;
+  font-weight: 700;
+  line-height: 1.2;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+.btn:hover { background: var(--folha-escura); border-color: var(--folha-escura); }
+.btn:active { transform: translateY(1px); }
+
+.btn-contorno { background: transparent; color: var(--folha); }
+.btn-contorno:hover { background: var(--broto); color: var(--folha-escura); border-color: var(--folha-escura); }
+
+.btn:disabled { opacity: 0.6; cursor: wait; transform: none; }
+
+/* Botão só de texto, sublinhado ("Remover arquivo", "Ver exame de exemplo") */
+.btn-texto {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--e-2);
+  min-height: 48px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--folha);
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+  cursor: pointer;
+}
+.btn-texto:hover { color: var(--folha-escura); text-decoration-thickness: 2px; }
+
+/* ---------- Topo (menu) ---------- */
+
+.topo {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: rgba(245, 246, 240, 0.94);
+  border-bottom: 1px solid var(--linha);
+}
+@supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .topo {
+    background: rgba(245, 246, 240, 0.82);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+}
+
+.menu {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--e-4);
+  min-height: var(--altura-topo);
+}
+
+.logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 48px;
+  color: var(--tinta);
+  font-size: 1.375rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  text-decoration: none;
+}
+.logo-marca {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 12px 12px 12px 4px;  /* folha: um canto mais fechado */
+  background: var(--folha);
+  color: var(--broto);
+}
+.logo-marca svg { width: 20px; height: 20px; }
+
+/* Botão do menu (só no celular) */
+.menu-botao {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--e-2);
+  min-height: 48px;
+  padding: 0 var(--e-4);
+  border: 2px solid var(--linha);
+  border-radius: 999px;
+  background: var(--cartao);
+  font-weight: 700;
+  cursor: pointer;
+}
+.menu-botao:hover { border-color: var(--folha); }
+.menu-botao .icone-fechar { display: none; }
+.menu-botao[aria-expanded="true"] .icone-abrir { display: none; }
+.menu-botao[aria-expanded="true"] .icone-fechar { display: block; }
+
+/* Lista de links: no celular é um painel que abre embaixo do topo */
+.menu-links {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  display: none;
+  flex-direction: column;
+  gap: var(--e-1);
+  padding: var(--e-3) var(--lateral) var(--e-5);
+  list-style: none;
+  background: var(--papel);
+  border-bottom: 1px solid var(--linha);
+  box-shadow: 0 24px 32px -24px rgba(31, 42, 27, 0.35);
+}
+.menu-botao[aria-expanded="true"] + .menu-links { display: flex; }
+
+.menu-links a:not(.btn) {
+  display: flex;
+  align-items: center;
+  gap: var(--e-2);
+  min-height: 52px;
+  padding: 0 var(--e-4);
+  border-radius: var(--r-pequeno);
+  color: var(--tinta);
+  font-size: var(--t-medio);
+  font-weight: 500;
+  text-decoration: none;
+}
+.menu-links a:not(.btn):hover { background: var(--broto); }
+.menu-links a[aria-current="page"]:not(.btn) {
+  font-weight: 700;
+  box-shadow: inset 4px 0 0 var(--folha);
+  background: var(--broto);
+}
+.menu-links .btn { width: 100%; margin-top: var(--e-3); }
+
+@media (min-width: 960px) {
+  .menu-botao { display: none; }
+  .menu-links {
+    position: static;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: var(--e-1);
+    padding: 0;
+    background: none;
+    border: 0;
+    box-shadow: none;
+  }
+  .menu-links a:not(.btn) { min-height: 48px; padding: 0 14px; font-size: var(--t-base); border-radius: 999px; }
+  .menu-links a[aria-current="page"]:not(.btn) { box-shadow: inset 0 -3px 0 var(--folha); background: none; border-radius: 0; }
+  .menu-links .btn { width: auto; margin: 0 0 0 var(--e-3); min-height: 48px; padding: 10px 20px; }
+}
+
+/* ---------- Seções (espaço entre blocos) ---------- */
+
+main { display: block; }
+.secao { padding-block: var(--e-8);  /* só em cima e embaixo: as laterais vêm do .container */ }
+.secao + .secao,
+.hero + .secao { padding-top: 0; }  /* o espaço de baixo do bloco anterior já basta */
+
+/* Títulos em duas cores: o fim do título fica num verde mais vivo */
+.tom { color: var(--broto-vivo); }  /* no fundo verde-claro dá 4,1:1: ok, título grande pede 3:1 */
+
+.titulo-secao {
+  font-size: var(--t-h2);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+.intro-secao {
+  max-width: 52ch;
+  margin-top: var(--e-3);
+  color: var(--tinta-suave);
+  font-size: var(--t-medio);
+  line-height: 1.5;
+}
+
+/* ---------- Home: topo com o tradutor ---------- */
+
+.hero {
+  display: grid;
+  gap: var(--e-7);
+  padding-block: var(--e-7) var(--e-8);
+}
+
+.hero h1 {
+  max-width: 15ch;
+  font-size: var(--t-h1);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.04;
+}
+.hero-texto > p {
+  max-width: 40ch;
+  margin-top: var(--e-5);
+  font-size: var(--t-medio);
+  line-height: 1.5;
+}
+.hero-acoes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--e-3);
+  margin-top: var(--e-6);
+}
+.hero-nota {
+  display: flex;
+  align-items: center;
+  gap: var(--e-2);
+  margin-top: var(--e-5);
+  color: var(--tinta-suave);
+  font-size: var(--t-pequeno);
+}
+
+/* O tradutor: um pedaço de laudo (em cima) e a tradução (embaixo) */
+.tradutor {
+  align-self: center;
+  border-radius: var(--r-grande);
+  background: var(--areia);
+  padding: var(--e-3);
+}
+
+.laudo {
+  padding: var(--e-4) var(--e-4) var(--e-3);
+  border-radius: var(--r-medio) var(--r-medio) 6px 6px;
+  background: var(--cartao);
+}
+.laudo-cabeca {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--e-3);
+  padding: 0 var(--e-2) var(--e-3);
+  color: var(--tinta-suave);
+  font-size: var(--t-pequeno);
+}
+.laudo-lista { list-style: none; padding: 0; border-top: 1px solid var(--linha); }
+/* Linhas finas entre os itens, como num laudo impresso */
+.laudo-lista li { padding: 3px 0; border-bottom: 1px solid var(--linha); }
+.laudo-lista li:last-child { border-bottom: 0; }
+
+.laudo-linha {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: var(--e-1) var(--e-3);
+  width: 100%;
+  min-height: 52px;
+  padding: 6px var(--e-2);
+  border: 2px solid transparent;
+  border-radius: var(--r-pequeno);
+  background: none;
+  font-family: var(--fonte-mono);
+  font-size: var(--t-pequeno);
+  text-align: left;
+  cursor: pointer;
+}
+.laudo-linha:hover { border-color: var(--salvia); }
+.laudo-linha[aria-pressed="true"] { border-color: var(--folha); background: var(--broto); }
+.laudo-nome { font-weight: 500; }
+.laudo-valor { font-weight: 500; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.laudo-ref { grid-column: 1 / -1; color: var(--tinta-suave); font-size: var(--t-pequeno); }
+.laudo-valor .marca { color: var(--ambar-texto); }
+
+/* A dobra entre o laudo e a tradução */
+.traducao {
+  position: relative;
+  margin-top: var(--e-2);
+  padding: var(--e-5) var(--e-5) var(--e-5);
+  border-radius: 6px 6px var(--r-medio) var(--r-medio);
+  background: var(--folha-escura);
+  color: #fff;
+}
+.traducao-rotulo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--e-3);
+  flex-wrap: wrap;
+}
+.traducao-rotulo strong { font-size: var(--t-medio); }
+.traducao p { margin-top: var(--e-3); }
+.traducao :focus-visible { outline-color: #fff; }
+
+/* A tradução aparece de leve quando muda (só para quem não pediu menos movimento) */
+@media (prefers-reduced-motion: no-preference) {
+  .traducao.trocou .traducao-texto { animation: chegar 0.45s var(--suave); }
+}
+@keyframes chegar {
+  from { opacity: 0; transform: translateY(8px); }
+}
+
+.tradutor-legenda {
+  padding: var(--e-3) var(--e-2) var(--e-1);
+  color: var(--tinta-suave);
+  font-size: var(--t-pequeno);
+}
+
+@media (min-width: 900px) {
+  .hero {
+    grid-template-columns: 1.1fr 1fr;
+    align-items: center;
+    gap: var(--e-8);
+    padding-block: var(--e-8) var(--e-7);
+  }
+  .tradutor { padding: var(--e-4); }
+  .laudo-linha { grid-template-columns: 1fr auto; }
+}
+
+/* ---------- Selos (Normal / Atenção) ---------- */
+
+.selo {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px 4px 8px;
+  border-radius: 999px;
+  font-family: var(--fonte);
+  font-size: var(--t-pequeno);
+  font-weight: 700;
+  white-space: nowrap;
+}
+.selo svg { width: 18px; height: 18px; }
+.selo-normal { background: var(--broto); color: var(--folha-escura); }
+.selo-atencao { background: var(--ambar-fundo); color: var(--ambar-texto); }
+
+/* ---------- Home: sobre a página Doenças de A a Z ---------- */
+
+.procurar {
+  display: grid;
+  gap: var(--e-6);
+  padding: var(--e-6) var(--e-5);
+  border-radius: var(--r-grande);
+  background: var(--cartao);
+  border: 1px solid var(--linha);
+}
+.procurar-todas { margin-top: var(--e-5); }
+
+/* O que cada doença traz: lista com ícone, separada por linhas finas */
+.procurar-partes h3 { font-size: var(--t-base); font-weight: 700; color: var(--tinta-suave); }
+.procurar-partes ul { list-style: none; padding: 0; margin-top: var(--e-3); }
+.procurar-partes li {
+  display: flex;
+  align-items: center;
+  gap: var(--e-4);
+  padding: var(--e-3) 0;
+  border-top: 1px solid var(--linha);
+  font-size: var(--t-medio);
+}
+.procurar-partes svg {
+  flex-shrink: 0;
+  width: 48px;
+  height: 48px;
+  padding: 12px;
+  border-radius: var(--r-pequeno);
+  background: var(--broto);
+  color: var(--folha);
+}
+
+@media (min-width: 900px) {
+  .procurar {
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    gap: var(--e-8);
+    padding: var(--e-7);
+  }
+}
+
+/* Campo de busca com lupa (página de doenças) */
+.busca {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.busca-lupa {
+  position: absolute;
+  left: 18px;
+  width: 26px;
+  height: 26px;
+  color: var(--folha);
+  pointer-events: none;
+}
+.busca input {
+  width: 100%;
+  min-height: 60px;
+  padding: 0 var(--e-4) 0 56px;
+  border: 2px solid var(--linha-campo);
+  border-radius: 999px;
+  background: #fff;
+  font-size: var(--t-medio);
+}
+.busca input::placeholder { color: var(--tinta-suave); opacity: 1; }
+.busca input:hover { border-color: var(--folha); }
+.busca input:focus-visible { outline: 3px solid var(--folha); outline-offset: 2px; border-color: var(--folha); }
+/* Tira o "x" azul que o Chrome coloca nos campos de busca (temos o nosso botão "Limpar") */
+.busca input::-webkit-search-cancel-button { -webkit-appearance: none; }
+
+/* ---------- Home: notícias em carrossel ----------
+   Sem JavaScript: as notícias ficam uma embaixo da outra.
+   Com JavaScript (classe "js" no <html>): uma notícia por vez + lista das manchetes ao lado. */
+
+.noticias-cabeca {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  justify-content: space-between;
+  gap: var(--e-4);
+}
+
+.carrossel-corpo { display: grid; gap: var(--e-5); margin-top: var(--e-6); }
+.carrossel-slides { display: grid; gap: var(--e-5); }
+
+/* O card de cada notícia */
+.noticia {
+  display: grid;
+  align-content: start;    /* sobra de altura vai para baixo, não entre o bloco verde e o texto */
+  gap: var(--e-5);
+  padding: var(--e-5);
+  border-radius: var(--r-grande);
+  background: var(--cartao);
+  border: 1px solid var(--linha);
+}
+
+/* Bloco verde com o ícone grande do tema (mesmo jeito das imagens 3D do site) */
+.noticia-arte {
+  position: relative;
+  display: grid;
+  place-items: center;
+  height: 120px;
+  border-radius: var(--r-medio);
+  background: var(--salvia);
+  color: var(--folha-escura);
+  overflow: hidden;
+}
+.noticia-arte svg { position: relative; width: 72px; height: 72px; }
+/* Textura de célula clarinha no fundo do bloco (a mesma das laterais) */
+.noticia-arte::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 340px;
+  aspect-ratio: 1;
+  background: url("../imagens/celula-lateral.webp") center / contain no-repeat;
+  transform: translate(-50%, -50%) rotate(20deg);   /* centralizada atrás do ícone */
+}
+
+.noticia-corpo { display: grid; gap: var(--e-3); align-content: start; min-width: 0; }
+
+.noticia-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--e-2) var(--e-4);
+  color: var(--tinta-suave);
+  font-size: var(--t-pequeno);
+}
+.noticia-tema {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px 4px 10px;
+  border-radius: 999px;
+  background: var(--broto);
+  color: var(--folha-escura);
+  font-weight: 700;
+}
+.noticia-tema svg { width: 16px; height: 16px; }
+
+.noticia h3 { font-size: clamp(1.4rem, 1.1rem + 1.2vw, 1.9rem); font-weight: 800; line-height: 1.2; letter-spacing: -0.015em; }
+.noticia h3 a { color: var(--tinta); text-decoration: none; }
+.noticia h3 a:hover { text-decoration: underline; text-decoration-color: var(--folha); text-decoration-thickness: 2px; }
+.noticia-resumo { max-width: 62ch; color: var(--tinta-suave); }
+
+/* "Para você": a parte prática da notícia, em destaque */
+.noticia-voce {
+  display: flex;
+  gap: var(--e-3);
+  align-items: flex-start;
+  padding: var(--e-4);
+  border-radius: var(--r-medio);
+  background: var(--broto);
+  color: var(--tinta);
+}
+.noticia-voce svg { flex-shrink: 0; width: 24px; height: 24px; margin-top: 2px; color: var(--folha); }
+.noticia-voce strong { color: var(--folha-escura); }
+
+.noticia-rodape {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--e-2) var(--e-5);
+}
+.noticia-doencas { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; color: var(--tinta-suave); font-size: var(--t-pequeno); }
+.noticia-doencas a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 14px;
+  border: 1px solid var(--salvia);
+  border-radius: 999px;
+  color: var(--folha-escura);
+  font-weight: 700;
+  text-decoration: none;
+}
+.noticia-doencas a:hover { background: var(--broto); border-color: var(--folha); }
+.noticia-fonte {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 44px;
+  color: var(--folha);
+  font-size: var(--t-pequeno);
+  font-weight: 700;
+}
+.noticia-fonte svg { width: 16px; height: 16px; }
+
+.noticias-nota { margin-top: var(--e-4); color: var(--tinta-suave); font-size: var(--t-pequeno); }
+
+@media (min-width: 760px) {
+  .noticia { grid-template-columns: 180px 1fr; align-content: stretch; padding: var(--e-6); gap: var(--e-6); }
+  .noticia-arte { height: auto; min-height: 220px; align-self: stretch; }
+  .noticia-arte svg { width: 96px; height: 96px; }
+}
+
+/* ----- Com JavaScript: vira carrossel ----- */
+
+/* Todas as notícias ocupam o MESMO lugar (uma em cima da outra).
+   Assim a caixa tem a altura da maior e a página não "pula" quando a notícia troca. */
+.js .carrossel-slides { gap: 0; overflow-x: clip; }  /* clip: a notícia que entra deslizando não cria rolagem para o lado */
+.js .carrossel-slides > .noticia {
+  grid-area: 1 / 1;
+  visibility: hidden;      /* escondida: não aparece nem é lida pelo leitor de tela */
+  opacity: 0;
+  transform: translateX(24px);
+  transition: opacity 0.45s ease, transform 0.6s var(--suave), visibility 0s linear 0.6s;
+}
+.js .carrossel-slides > .noticia.ativa {
+  visibility: visible;
+  opacity: 1;
+  transform: none;
+  transition: opacity 0.5s ease 0.1s, transform 0.6s var(--suave) 0.1s, visibility 0s;
+}
+.js .noticia.ativa .noticia-arte svg { animation: icone-chegar 0.8s var(--suave) both; }
+@keyframes icone-chegar {
+  from { opacity: 0; transform: translateY(24px) scale(0.8) rotate(-8deg); }
+}
+
+/* Lista das manchetes: no celular vira 5 barrinhas (como "stories"); no computador, manchetes */
+.carrossel-lista {
+  order: -1;               /* no celular, as barrinhas ficam em cima do card, como nos "stories" */
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 6px;
+  list-style: none;
+  padding: 0;
+}
+.carrossel-botao {
+  position: relative;
+  display: grid;
+  align-content: center;
+  width: 100%;
+  min-height: 44px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--tinta-suave);
+  text-align: left;
+  cursor: pointer;
+}
+.carrossel-botao-tema,
+.carrossel-botao-titulo {   /* no celular, o texto fica só para o leitor de tela */
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+.carrossel-barra {
+  display: block;
+  height: 6px;
+  border-radius: 999px;
+  background: var(--salvia);
+  overflow: hidden;
+}
+/* A parte que enche: o tempo que falta para trocar de notícia */
+.carrossel-barra > span {
+  display: block;
+  height: 100%;
+  width: 100%;
+  border-radius: inherit;
+  background: var(--folha);
+  transform-origin: left;
+  transform: scaleX(0);
+}
+.carrossel-botao[aria-current] .carrossel-barra > span { transform: scaleX(1); }
+.carrossel-botao:hover .carrossel-barra { background: var(--linha-campo); }
+.carrossel-botao:focus-visible { outline: 3px solid var(--folha); outline-offset: 3px; border-radius: 8px; }
+
+/* Barra enchendo: só quando o carrossel está rodando (o JS coloca a classe "rodando").
+   Quando a barra termina de encher, o JS passa para a próxima notícia. */
+.carrossel.rodando .carrossel-botao[aria-current] .carrossel-barra > span {
+  animation: encher-barra var(--tempo-noticia, 8s) linear;
+}
+@keyframes encher-barra { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+
+/* O tempo para (a barra congela onde está) quando: o mouse está em cima, o teclado está dentro,
+   a pessoa apertou "Pausar" (.pausado) ou o carrossel saiu da tela (.fora-da-tela) */
+.carrossel.rodando:is(:hover, :has(:focus-visible), .pausado, .fora-da-tela) .carrossel-barra > span { animation-play-state: paused; }
+
+.carrossel-pausa .icone { width: 20px; height: 20px; }
+
+@media (min-width: 960px) {
+  .carrossel-corpo { grid-template-columns: minmax(0, 1fr) 320px; gap: var(--e-6); align-items: stretch; }
+  .carrossel-lista { order: 0; grid-template-columns: none; align-content: start; gap: 0; border-top: 2px solid var(--tinta); }
+  .carrossel-lista li { border-bottom: 1px solid var(--linha); }
+  .carrossel-botao { gap: 4px; padding: var(--e-4) var(--e-2) var(--e-4) 0; }
+  .carrossel-botao-tema,
+  .carrossel-botao-titulo { position: static; width: auto; height: auto; overflow: visible; clip-path: none; white-space: normal; }
+  .carrossel-botao-tema { font-size: var(--t-pequeno); font-weight: 700; color: var(--folha); }
+  .carrossel-botao-titulo { font-size: var(--t-base); font-weight: 500; line-height: 1.3; }
+  .carrossel-botao:hover .carrossel-botao-titulo { color: var(--tinta); text-decoration: underline; text-decoration-color: var(--salvia); }
+  .carrossel-botao[aria-current] .carrossel-botao-titulo { color: var(--tinta); font-weight: 700; }
+  .carrossel-barra { height: 4px; margin-top: var(--e-2); background: transparent; }
+  .carrossel-botao[aria-current] .carrossel-barra { background: var(--salvia); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .js .carrossel-slides > .noticia,
+  .js .carrossel-slides > .noticia.ativa { transform: none; transition: none; }
+  .js .noticia.ativa .noticia-arte svg { animation: none; }
+}
+
+/* ---------- Faixa clara do aviso (Home) ----------
+   Clara de propósito: o verde-escuro já aparece logo acima, na tradução do topo. */
+
+.faixa-aviso {
+  display: grid;
+  gap: var(--e-5);
+  padding: var(--e-7) var(--e-5);
+  border-radius: var(--r-grande);
+  background: var(--broto);
+  color: var(--tinta);
+}
+.faixa-aviso h2 { font-size: var(--t-h2); font-weight: 800; letter-spacing: -0.02em; max-width: 18ch; color: var(--folha-escura); }
+.faixa-aviso p { max-width: 48ch; font-size: var(--t-medio); line-height: 1.5; }
+.faixa-aviso a:not(.btn) { color: var(--folha-escura); font-weight: 700; }
+.faixa-aviso-acoes { display: flex; flex-wrap: wrap; gap: var(--e-3); align-items: center; }
+
+@media (min-width: 900px) {
+  .faixa-aviso { grid-template-columns: 1fr 1fr; align-items: end; padding: var(--e-8) var(--e-7); }
+  .faixa-aviso-acoes { grid-column: 2; }
+}
+
+/* ---------- Rodapé ---------- */
+
+.rodape {
+  margin-top: var(--e-8);
+  padding: var(--e-7) 0 var(--e-6);
+  border-top: 1px solid var(--linha);
+  background: var(--areia);
+}
+.rodape-grade { display: grid; gap: var(--e-6); }
+.rodape h2 { font-size: var(--t-h3); font-weight: 800; }
+.rodape p { margin-top: var(--e-2); }
+.rodape ul { list-style: none; padding: 0; display: grid; gap: var(--e-1); margin-top: var(--e-3); }
+.rodape-links a { display: inline-flex; align-items: center; min-height: 44px; color: var(--tinta); }
+.rodape-aviso {
+  margin-top: var(--e-6);
+  padding-top: var(--e-5);
+  border-top: 1px solid var(--linha-campo);
+  font-size: var(--t-pequeno);
+}
+.rodape-aviso + p { font-size: var(--t-pequeno); color: var(--tinta-suave); }
+
+@media (min-width: 760px) {
+  .rodape-grade { grid-template-columns: 1.4fr 1fr 1fr; }
+}
+
+/* ---------- Topo das páginas internas ---------- */
+
+.cabeca-pagina { padding: var(--e-7) 0 var(--e-6); }
+.cabeca-pagina h1 {
+  max-width: 18ch;
+  font-size: var(--t-h1);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.04;
+}
+.cabeca-pagina > p,
+.cabeca-pagina-texto > p {
+  max-width: 46ch;
+  margin-top: var(--e-4);
+  font-size: var(--t-medio);
+  line-height: 1.5;
+}
+
+/* ---------- Doenças A-Z ---------- */
+
+/* Busca + letras ficam presas embaixo do menu enquanto a lista rola */
+.doencas-barra {
+  position: sticky;
+  top: var(--altura-topo);
+  z-index: 10;
+  padding: var(--e-3) 0;
+  background: var(--papel);
+  border-bottom: 1px solid var(--linha);
+}
+.doencas-barra .busca input { min-height: 56px; }
+.doencas-barra-linha { display: flex; gap: var(--e-3); align-items: center; }
+.doencas-barra-linha .busca { flex: 1; }
+
+/* Letras: no celular, uma faixa que rola para o lado; no computador, todas aparecem */
+.letras {
+  display: flex;
+  gap: 4px;
+  margin-top: var(--e-3);
+  padding: 0 0 4px;
+  list-style: none;
+  overflow-x: auto;
+  scrollbar-width: thin;
+  overscroll-behavior-x: contain;
+  /* a borda direita some aos poucos: mostra que dá para rolar para o lado */
+  -webkit-mask-image: linear-gradient(to right, #000 85%, transparent);
+  mask-image: linear-gradient(to right, #000 85%, transparent);
+}
+.letras a,
+.letras span {
+  display: grid;
+  place-items: center;
+  min-width: 44px;
+  min-height: 44px;
+  border-radius: 10px;
+  font-weight: 700;
+  text-decoration: none;
+}
+.letras a { color: var(--folha-escura); background: var(--broto); }
+.letras a:hover { background: var(--folha); color: #fff; }
+.letras span { color: #8D9486; }
+
+/* Telas maiores: as 26 letras cabem numa linha só, sem rolar */
+@media (min-width: 900px) {
+  .letras {
+    align-items: center;
+    height: 68px;           /* altura fixa: as letras crescem sem empurrar a página */
+    overflow: visible;
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+  .letras li { flex: 1 1 0; min-width: 0; }
+  .letras a, .letras span { min-width: 0; font-size: var(--t-base); }
+}
+
+/* Efeito "lupa" (como o Dock do Mac): a letra embaixo do mouse cresce, as vizinhas crescem
+   um pouco e as outras encolhem para dar espaço. Funciona assim:
+   - cada <li> divide o espaço da linha com "flex-grow" (quanto maior o número, mais largo);
+   - li:hover é a letra embaixo do mouse; "li:hover + li" é a da direita;
+     "li:has(+ li:hover)" é a da esquerda (a que TEM logo depois dela a letra com mouse).
+   Com o teclado (Tab), só a letra escolhida cresce (abaixo, :focus-visible). */
+@media (min-width: 900px) and (hover: hover) {
+  .letras li { transition: flex-grow 0.35s var(--suave), opacity 0.3s ease; }
+  .letras a, .letras span { transition: min-height 0.35s var(--suave), font-size 0.35s var(--suave), background-color 0.2s ease, color 0.2s ease; }
+
+  /* Enquanto o mouse está na faixa, as letras longe dele ficam menores e mais claras */
+  .letras:hover li { opacity: 0.55; }
+  .letras:hover a,
+  .letras:hover span { font-size: 0.95rem; }
+
+  /* 2ª vizinha de cada lado */
+  .letras li:hover + li + li,
+  .letras li:has(+ li + li:hover) { flex-grow: 1.3; opacity: 0.8; }
+  .letras li:hover + li + li > *,
+  .letras li:has(+ li + li:hover) > * { font-size: 1.1rem; min-height: 48px; }
+
+  /* 1ª vizinha de cada lado */
+  .letras li:hover + li,
+  .letras li:has(+ li:hover) { flex-grow: 1.8; opacity: 1; }
+  .letras li:hover + li > *,
+  .letras li:has(+ li:hover) > * { font-size: 1.3rem; min-height: 54px; }
+
+  /* A letra embaixo do mouse */
+  .letras li:hover { flex-grow: 2.8; opacity: 1; }
+  .letras li:hover > * { font-size: 1.75rem; min-height: 64px; }
+  .letras li:hover a, .letras a:focus-visible { background: var(--folha); color: #fff; }
+
+  /* Teclado */
+  .letras li:has(:focus-visible) { flex-grow: 2.8; }
+  .letras li > :focus-visible { font-size: 1.75rem; min-height: 64px; }
+}
+@media (min-width: 900px) and (hover: hover) and (prefers-reduced-motion: reduce) {
+  .letras li, .letras a, .letras span { transition: none; }
+}
+
+.busca-limpar { flex-shrink: 0; min-height: 56px; }
+
+.doencas-status {
+  margin-top: var(--e-5);
+  color: var(--tinta-suave);
+}
+
+/* Reserva espaço enquanto o JavaScript monta a lista (evita a página "pular" ao carregar) */
+.doencas-grupos:empty { min-height: 100vh; }
+
+.grupo { margin-top: var(--e-6); scroll-margin-top: calc(var(--altura-topo) + 150px); }
+.grupo-letra {
+  display: flex;
+  align-items: center;
+  gap: var(--e-4);
+  font-size: var(--t-h2);
+  font-weight: 800;
+  color: var(--folha);
+}
+.grupo-letra::after { content: ""; flex: 1; height: 2px; background: var(--linha); }
+
+.doencas-lista { list-style: none; padding: 0; margin-top: var(--e-3); display: grid; gap: var(--e-2); }
+
+/* Cada doença é um <details>: abre e fecha sem JavaScript */
+.doenca {
+  scroll-margin-top: calc(var(--altura-topo) + 170px);  /* não fica escondida atrás do menu + barra de busca */
+  border: 1px solid var(--linha);
+  border-radius: var(--r-medio);
+  background: var(--cartao);
+}
+.doenca[open] { border-color: var(--folha); box-shadow: inset 4px 0 0 var(--folha); }
+.doenca summary {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: var(--e-1) var(--e-4);
+  min-height: 64px;
+  padding: var(--e-4) var(--e-5);
+  cursor: pointer;
+  list-style: none;
+  border-radius: var(--r-medio);
+}
+.doenca summary::-webkit-details-marker { display: none; }
+.doenca summary:hover .doenca-nome { text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 0.2em; }
+.doenca-nome { font-size: var(--t-medio); font-weight: 700; line-height: 1.3; }
+.doenca-tambem { grid-column: 1; color: var(--tinta-suave); font-size: var(--t-pequeno); }
+.doenca-seta {
+  grid-row: 1 / span 2;
+  grid-column: 2;
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--broto);
+  color: var(--folha-escura);
+  transition: transform 0.2s ease;
+}
+.doenca-seta svg { width: 22px; height: 22px; }
+.doenca[open] .doenca-seta { transform: rotate(180deg); }
+
+.doenca-corpo {
+  display: grid;
+  gap: var(--e-5);
+  padding: 0 var(--e-5) var(--e-5);
+}
+.doenca-corpo h3 { font-size: var(--t-base); font-weight: 800; margin-bottom: var(--e-1); }
+.doenca-corpo ul { padding-left: 1.2em; display: grid; gap: 2px; }
+.doenca-ajuda {
+  padding: var(--e-4);
+  border-radius: var(--r-pequeno);
+  background: var(--broto);
+}
+.doenca-fonte { font-size: var(--t-pequeno); color: var(--tinta-suave); }
+.doenca-fonte a { font-weight: 700; display: inline-flex; align-items: center; gap: 4px; min-height: 44px; }
+.doenca-fonte svg { width: 16px; height: 16px; }
+
+@media (min-width: 760px) {
+  .doenca-corpo { grid-template-columns: 1fr 1fr; column-gap: var(--e-6); padding: 0 var(--e-6) var(--e-6); }
+  .doenca-corpo > .doenca-resumo,
+  .doenca-corpo > .doenca-ajuda,
+  .doenca-corpo > .doenca-fonte { grid-column: 1 / -1; }
+  .doenca summary { padding: var(--e-4) var(--e-6); }
+}
+
+/* Nenhum resultado na busca */
+.vazio {
+  margin-top: var(--e-6);
+  padding: var(--e-6) var(--e-5);
+  border-radius: var(--r-grande);
+  border: 2px dashed var(--linha-campo);
+  text-align: center;
+}
+.vazio h2 { font-size: var(--t-h3); font-weight: 800; }
+.vazio p { margin: var(--e-2) auto 0; max-width: 46ch; }
+.vazio .btn { margin-top: var(--e-4); }
+
+.doencas-fim { margin-top: var(--e-7); color: var(--tinta-suave); font-size: var(--t-pequeno); max-width: 70ch; }
+
+/* ---------- Formulários (Entrar e Análise) ---------- */
+
+.campo { display: grid; gap: 6px; }
+.campo label { font-weight: 700; }
+.campo-dica { color: var(--tinta-suave); font-size: var(--t-pequeno); }
+.campo input {
+  width: 100%;
+  min-height: 56px;
+  padding: 0 var(--e-4);
+  border: 2px solid var(--linha-campo);
+  border-radius: var(--r-pequeno);
+  background: #fff;
+  font-size: var(--t-base);
+}
+.campo input:hover { border-color: var(--folha); }
+.campo input:focus-visible { outline: 3px solid var(--folha); outline-offset: 2px; border-color: var(--folha); }
+.campo input[aria-invalid="true"] { border-color: var(--ambar-texto); }
+
+/* Senha com botão "Mostrar" dentro do campo */
+.campo-senha { position: relative; }
+.campo-senha input { padding-right: 120px; }
+.campo-senha .mostrar {
+  position: absolute;
+  right: 6px;
+  bottom: 4px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 48px;
+  padding: 0 12px;
+  border: 0;
+  border-radius: 8px;
+  background: none;
+  color: var(--folha);
+  font-weight: 700;
+  cursor: pointer;
+}
+.campo-senha .mostrar:hover { background: var(--broto); }
+.campo-senha .mostrar svg { width: 20px; height: 20px; }
+
+/* Mensagens: atenção (âmbar, com ícone) e sucesso (verde, com ícone). A cor nunca é o único sinal. */
+.mensagem {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--e-3);
+  padding: 14px var(--e-4);
+  border-radius: var(--r-pequeno);
+  font-weight: 700;
+}
+.mensagem svg { width: 24px; height: 24px; flex-shrink: 0; margin-top: 1px; }
+.mensagem-atencao { background: var(--ambar-fundo); color: var(--ambar-texto); }
+.mensagem-ok { background: var(--broto); color: var(--folha-escura); }
+.mensagem-info { background: var(--areia); color: var(--tinta); font-weight: 400; }
+
+/* ---------- Entrar ---------- */
+
+.entrar {
+  display: grid;
+  gap: var(--e-6);
+  padding-bottom: var(--e-6);
+}
+.cartao-form {
+  padding: var(--e-5);
+  border-radius: var(--r-grande);
+  background: var(--cartao);
+  border: 1px solid var(--linha);
+}
+
+/* Abas "Entrar" / "Criar conta" */
+.abas {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px;
+  padding: 4px;
+  border-radius: 999px;
+  background: var(--areia);
+}
+.aba {
+  min-height: 48px;
+  border: 0;
+  border-radius: 999px;
+  background: none;
+  font-weight: 700;
+  color: var(--tinta-suave);
+  cursor: pointer;
+}
+.aba:hover { color: var(--tinta); }
+.aba[aria-selected="true"] { background: #fff; color: var(--tinta); box-shadow: 0 1px 2px rgba(31, 42, 27, 0.15); }
+
+.form { display: grid; gap: var(--e-5); margin-top: var(--e-5); }
+.form .btn { width: 100%; }
+.form h2 { font-size: var(--t-h3); font-weight: 800; }
+.form-rodape { display: flex; flex-wrap: wrap; justify-content: space-between; gap: var(--e-2); }
+
+.conta-logada { display: grid; gap: var(--e-4); }
+.conta-logada h2 { font-size: var(--t-h3); font-weight: 800; }
+.conta-acoes { display: flex; flex-wrap: wrap; gap: var(--e-3); }
+
+.entrar-lado h2 { font-size: var(--t-h3); font-weight: 800; }
+.entrar-lado ul { list-style: none; padding: 0; margin-top: var(--e-4); display: grid; gap: var(--e-4); }
+.entrar-lado li { display: grid; grid-template-columns: 40px 1fr; gap: var(--e-3); align-items: start; }
+.entrar-lado li > svg {
+  width: 40px;
+  height: 40px;
+  padding: 9px;
+  border-radius: 12px;
+  background: var(--broto);
+  color: var(--folha-escura);
+}
+
+@media (min-width: 900px) {
+  .entrar { grid-template-columns: minmax(0, 520px) 1fr; gap: var(--e-8); align-items: start; }
+  .cartao-form { padding: var(--e-6); }
+  .entrar-lado { padding-top: var(--e-5); }
+}
+
+/* ---------- Análise ---------- */
+
+.analise-cabeca { display: grid; gap: var(--e-5); align-items: end; }
+.analise-arte {
+  display: none;
+  position: relative;
+  width: 220px;
+  height: 180px;
+  border-radius: var(--r-grande);
+  background: var(--salvia);
+}
+.analise-arte img { position: absolute; left: 50%; bottom: 6px; width: 230px; height: auto; transform: translateX(-50%); }
+
+@media (min-width: 900px) {
+  .analise-cabeca { grid-template-columns: 1fr auto; }
+  .analise-arte { display: block; margin-top: 60px; }  /* o topo da imagem sai do bloco */
+}
+
+/* Bloco "Entre para analisar" (quem não fez login) */
+.portao {
+  display: grid;
+  gap: var(--e-4);
+  padding: var(--e-6) var(--e-5);
+  border-radius: var(--r-grande);
+  background: var(--cartao);
+  border: 1px solid var(--linha);
+}
+.portao-icone {
+  width: 56px;
+  height: 56px;
+  padding: 14px;
+  border-radius: 16px;
+  background: var(--broto);
+  color: var(--folha-escura);
+}
+.portao h2 { font-size: var(--t-h3); font-weight: 800; }
+.portao p { max-width: 56ch; }
+.portao-acoes { display: flex; flex-wrap: wrap; gap: var(--e-3); align-items: center; margin-top: var(--e-2); }
+
+@media (min-width: 760px) {
+  .portao { grid-template-columns: auto 1fr; column-gap: var(--e-5); padding: var(--e-7); }
+  .portao > :not(.portao-icone) { grid-column: 2; }
+}
+
+.envio {
+  padding: var(--e-5) var(--e-4);
+  border-radius: var(--r-grande);
+  background: var(--cartao);
+  border: 1px solid var(--linha);
+}
+.envio h2, .resultado h2 { font-size: var(--t-h2); font-weight: 800; letter-spacing: -0.02em; }
+
+.passos-envio { list-style: none; padding: 0; display: grid; gap: var(--e-6); margin-top: var(--e-5); }
+.passo-envio { display: grid; grid-template-columns: 40px 1fr; gap: var(--e-4); }
+/* Aqui a numeração faz sentido: é uma sequência de verdade (1. escolher, 2. confirmar, 3. analisar) */
+.passo-num {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--folha);
+  color: #fff;
+  font-weight: 800;
+}
+.passo-envio h3 { font-size: var(--t-medio); font-weight: 700; padding-top: 4px; }
+
+/* Celular: o número fica ao lado só do título; o resto usa a largura toda
+   (display: contents faz os filhos da div entrarem direto no grid do <li>) */
+.passo-envio { row-gap: var(--e-3); align-items: start; }
+.passo-envio > div { display: contents; }
+.passo-envio > div > :not(h3) { grid-column: 1 / -1; min-width: 0; }
+
+@media (min-width: 760px) {
+  .passo-envio > div { display: grid; gap: var(--e-3); min-width: 0; }
+  .passo-envio > div > :not(h3) { grid-column: auto; }
+}
+
+.privacidade { color: var(--tinta-suave); }
+
+.upload-input { position: absolute; width: 1px; height: 1px; opacity: 0; overflow: hidden; }
+.upload-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--e-2);
+  padding: var(--e-6) var(--e-4);
+  border: 2px dashed var(--linha-campo);
+  border-radius: var(--r-medio);
+  background: var(--papel);
+  text-align: center;
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+.upload-area:hover,
+.upload.arrastando .upload-area { background: var(--broto); border-color: var(--folha); }
+.upload-input:focus-visible + .upload-area { outline: 3px solid var(--folha); outline-offset: 3px; }
+.upload-icone { width: 44px; height: 44px; color: var(--folha); }
+.upload-titulo { font-size: var(--t-medio); font-weight: 700; }
+.upload-formatos { color: var(--tinta-suave); font-size: var(--t-pequeno); }
+.upload-arrastar { display: none; }
+@media (hover: hover) and (pointer: fine) { .upload-arrastar { display: block; } }
+
+.upload-escolhido {
+  display: flex;
+  align-items: center;
+  gap: var(--e-4);
+  padding: var(--e-4);
+  border-radius: var(--r-medio);
+  background: var(--broto);
+}
+.upload-previa {
+  flex-shrink: 0;
+  width: 88px;
+  max-height: 120px;
+  object-fit: cover;
+  object-position: top;
+  border-radius: 10px;
+  border: 1px solid var(--linha);
+  background: #fff;
+}
+.upload-previa-pdf { flex-shrink: 0; width: 56px; height: 56px; color: var(--folha); }
+.upload-escolhido-texto { min-width: 0; }
+.upload-nome { overflow-wrap: anywhere; }
+
+.confirmacao {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: var(--e-4);
+  border-radius: var(--r-pequeno);
+  border: 2px solid var(--linha);
+  background: #fff;
+  cursor: pointer;
+}
+.confirmacao:hover { border-color: var(--folha); }
+.confirmacao:has(input:checked) { border-color: var(--folha); background: var(--broto); }
+.confirmacao input {
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  margin: 0;
+  accent-color: var(--folha);
+  cursor: pointer;
+}
+
+.envio-acoes { display: flex; flex-wrap: wrap; align-items: center; gap: var(--e-3) var(--e-5); }
+
+/* Analisando / erro */
+.estado {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--e-4);
+  margin-top: var(--e-5);
+  padding: var(--e-5);
+  border-radius: var(--r-medio);
+  background: var(--areia);
+}
+.estado p + p { margin-top: 4px; }
+.estado-acoes { display: flex; flex-wrap: wrap; gap: var(--e-3); margin-top: var(--e-4); }
+.carregando-roda {
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 4px solid var(--salvia);
+  border-top-color: var(--folha);
+  animation: girar 1s linear infinite;
+}
+@keyframes girar { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) { .carregando-roda { animation-duration: 3s; } }
+
+@media (min-width: 760px) {
+  .envio { padding: var(--e-7); }
+  .passo-envio { grid-template-columns: 48px 1fr; gap: var(--e-5); }
+  .passo-num { width: 48px; height: 48px; font-size: var(--t-medio); }
+}
+
+/* Resultado */
+.resultado { margin-top: var(--e-7); }
+#titulo-resultado:focus { outline: none; }
+.resultado-cabeca { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--e-3); }
+.etiqueta {
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: var(--areia);
+  font-size: var(--t-pequeno);
+  font-weight: 700;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .resultado:not([hidden]) { animation: chegar 0.6s var(--suave); }
+}
+
+.resumo {
+  margin-top: var(--e-5);
+  padding: var(--e-6) var(--e-5);
+  border-radius: var(--r-grande);
+  background: var(--folha-escura);
+  color: #fff;
+}
+.resumo h3 { font-size: var(--t-h3); font-weight: 800; }
+.resumo-contagem { display: flex; flex-wrap: wrap; gap: var(--e-2); margin-top: var(--e-4); }
+.resumo-texto { display: grid; gap: var(--e-3); margin-top: var(--e-4); max-width: 68ch; }
+.resumo-aviso {
+  margin-top: var(--e-5);
+  padding-top: var(--e-4);
+  border-top: 1px solid rgba(255, 255, 255, 0.3);
+  font-weight: 700;
+}
+
+.resultado-subtitulo { margin-top: var(--e-7); font-size: var(--t-h3); font-weight: 800; }
+.resultado-subtitulo + p { margin-top: var(--e-2); color: var(--tinta-suave); }
+
+.itens { list-style: none; padding: 0; margin-top: var(--e-4); border-top: 2px solid var(--tinta); }
+.item {
+  display: grid;
+  gap: var(--e-2);
+  padding: var(--e-5) var(--e-4);  /* mesmo recuo em todos: as colunas ficam alinhadas com ou sem destaque */
+  border-bottom: 1px solid var(--linha);
+}
+.item-topo { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--e-2) var(--e-3); }
+.item h4 { font-size: var(--t-medio); font-weight: 700; }
+.item-valor {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--e-1) var(--e-4);
+  font-family: var(--fonte-mono);
+  font-variant-numeric: tabular-nums;
+}
+.item-valor strong { font-size: var(--t-medio); font-weight: 500; }
+.item-valor span { color: var(--tinta-suave); font-size: var(--t-pequeno); }
+.item-explicacao { max-width: 68ch; }
+/* Fora da referência: faixa âmbar à esquerda (o selo com ícone e palavra é o sinal principal) */
+.item-atencao { box-shadow: inset 4px 0 0 var(--ambar-texto); background: linear-gradient(to right, rgba(246, 228, 192, 0.45), transparent 70%); }
+
+@media (min-width: 900px) {
+  .resumo { padding: var(--e-7); }
+  .item { grid-template-columns: 260px 1fr; column-gap: var(--e-6); align-items: start; }
+  .item-topo { grid-row: 1 / span 2; flex-direction: column; align-items: flex-start; }
+  .item-valor { grid-column: 2; }
+  .item-explicacao { grid-column: 2; }
+}
+
+.resultado-fim {
+  display: grid;
+  justify-items: start;
+  gap: var(--e-3);
+  margin-top: var(--e-6);
+  padding: var(--e-6) var(--e-5);
+  border-radius: var(--r-grande);
+  background: var(--areia);
+}
+.resultado-fim .btn { margin-top: var(--e-2); }
+@media (min-width: 760px) { .resultado-fim { padding: var(--e-6) var(--e-7); } }
+
+/* ---------- Aviso ---------- */
+
+.aviso-grade { display: grid; gap: var(--e-6); }
+
+/* Sumário: no computador fica preso ao lado do texto.
+   Visual de "vidro" (liquid glass): fundo meio transparente que desfoca o que passa atrás
+   (as células decorativas), borda clara de cima como um reflexo e sombra bem leve. */
+.sumario {
+  position: relative;
+  padding: var(--e-5) var(--e-4);
+  border-radius: var(--r-grande);
+  border: 1px solid rgba(255, 255, 255, 0.75);
+  background: linear-gradient(150deg, rgba(255, 255, 255, 0.72), rgba(226, 234, 213, 0.38));
+  -webkit-backdrop-filter: blur(16px) saturate(1.5);
+  backdrop-filter: blur(16px) saturate(1.5);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.95),     /* reflexo na borda de cima */
+    inset 0 -1px 0 rgba(61, 90, 50, 0.08),       /* sombrinha na borda de baixo */
+    0 12px 32px -8px rgba(31, 42, 27, 0.14);
+}
+.sumario h2 { padding-inline: 14px; font-size: var(--t-base); font-weight: 800; }
+.sumario ul { list-style: none; padding: 0; margin-top: var(--e-2); display: grid; gap: 2px; }
+.sumario a {
+  display: flex;
+  align-items: center;
+  width: fit-content;
+  min-height: 44px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  color: var(--tinta-suave);
+  font-weight: 500;        /* o peso não muda no destaque: assim o texto não "pula" de largura */
+  text-decoration: none;
+  transform-origin: left center;
+  transition: transform 0.35s var(--suave), opacity 0.3s ease, background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Em evidência: o tópico com o mouse em cima, o escolhido pelo teclado
+   e o tópico que a pessoa está lendo agora (aria-current, marcado pelo js/sumario.js) */
+.sumario a:hover,
+.sumario a:focus-visible,
+.sumario a[aria-current] {
+  transform: scale(1.1);
+  color: var(--folha-escura);
+  background: rgba(255, 255, 255, 0.85);
+  box-shadow: 0 2px 10px -2px rgba(31, 42, 27, 0.15);
+}
+/* Pontinho verde que aparece ao lado do tópico em evidência */
+.sumario a::before {
+  content: "";
+  flex-shrink: 0;
+  width: 0;
+  height: 8px;
+  margin-right: 0;
+  border-radius: 50%;
+  background: var(--broto-vivo);
+  transition: width 0.3s var(--suave), margin-right 0.3s var(--suave);
+}
+.sumario a:hover::before,
+.sumario a:focus-visible::before,
+.sumario a[aria-current]::before { width: 8px; margin-right: 10px; }
+@media (hover: hover) {
+  .sumario ul:hover li:not(:hover) a[aria-current]::before { width: 0; margin-right: 0; }
+}
+/* Mesmo efeito "lupa" das letras: com o mouse no sumário, os outros tópicos ficam menores e
+   mais claros, e o vizinho do tópico apontado cresce só um pouco */
+@media (hover: hover) {
+  .sumario ul:hover a { transform: scale(0.95); opacity: 0.6; }
+  .sumario ul:hover li:hover + li a,
+  .sumario ul:hover li:has(+ li:hover) a { transform: scale(1.02); opacity: 0.85; }
+  .sumario ul:hover li:hover a { transform: scale(1.1); opacity: 1; }
+  /* enquanto o mouse está no sumário, quem manda é o mouse: o tópico atual volta ao normal */
+  .sumario ul:hover li:not(:hover) a[aria-current] { background: none; box-shadow: none; color: var(--tinta-suave); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .sumario a { transition: none; }
+}
+
+.aviso-texto { display: grid; gap: var(--e-8); min-width: 0; }
+.aviso-bloco { display: grid; gap: var(--e-4); max-width: 68ch; }
+.aviso-bloco h2 { font-size: var(--t-h2); font-weight: 800; letter-spacing: -0.02em; }
+.aviso-bloco h3 { font-size: var(--t-medio); font-weight: 700; margin-top: var(--e-2); }
+.aviso-bloco ul { padding-left: 1.2em; display: grid; gap: var(--e-2); }
+
+.comparacao { display: grid; gap: var(--e-3); margin-top: var(--e-2); }
+.comparacao > div { padding: var(--e-5); border-radius: var(--r-medio); }
+.comparacao h3 { margin-top: 0; display: flex; align-items: center; gap: var(--e-2); }
+.comparacao h3 svg { width: 24px; height: 24px; }
+.comparacao ul { margin-top: var(--e-3); }
+.comparacao-site { background: var(--broto); }
+.comparacao-medico { background: var(--cartao); border: 1px solid var(--linha); }
+
+/* "A IA pode errar": bloco comum (não grid), para o microscópio "flutuar" à direita do texto */
+.aviso-erro {
+  display: block;
+  max-width: none;
+  position: relative;
+  padding: var(--e-6) var(--e-5);
+  border-radius: var(--r-grande);
+  background: var(--cartao);
+  border: 1px solid var(--linha);
+}
+.aviso-erro-arte {
+  display: none;
+  float: right;
+  position: relative;
+  width: 170px;
+  height: 150px;
+  margin: 40px 0 var(--e-4) var(--e-5);
+  border-radius: var(--r-medio);
+  background: var(--salvia);
+  shape-outside: inset(0 round 18px);
+}
+.aviso-erro-arte img { position: absolute; left: 50%; bottom: 6px; width: 180px; height: auto; transform: translateX(-50%); }
+
+.aviso-erro > * + * { margin-top: var(--e-4); }
+.aviso-erro > .aviso-erro-arte + h2 { margin-top: 0; }
+.aviso-erro p, .aviso-erro ul { max-width: 62ch; }
+
+.urgente {
+  display: flex;
+  gap: var(--e-4);
+  align-items: flex-start;
+  padding: var(--e-5);
+  border-radius: var(--r-medio);
+  background: var(--folha-escura);
+  color: #fff;
+}
+.urgente svg { width: 28px; height: 28px; flex-shrink: 0; color: var(--broto); }
+.urgente a { color: #fff; font-weight: 800; white-space: nowrap; }
+.urgente :focus-visible { outline-color: #fff; }
+
+.aviso-fim {
+  display: grid;
+  gap: var(--e-4);
+  justify-items: start;
+  padding: var(--e-6) var(--e-5);
+  border-radius: var(--r-grande);
+  background: var(--broto);
+}
+.aviso-fim h2 { font-size: var(--t-h2); font-weight: 800; }
+
+@media (min-width: 760px) {
+  .comparacao { grid-template-columns: 1fr 1fr; }
+  .aviso-erro { padding: var(--e-7); }
+  .aviso-erro-arte { display: block; }
+  .aviso-fim { padding: var(--e-7); }
+}
+
+@media (min-width: 1000px) {
+  .aviso-grade { grid-template-columns: 260px 1fr; gap: var(--e-8); align-items: start; }
+  .sumario { position: sticky; top: calc(var(--altura-topo) + var(--e-5)); }
+}
+
+/* Quem pediu "menos movimento" no sistema: sem transições nem animações */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition-duration: 0.01ms !important; }
+  .doenca-seta { transition: none; }
+}
+
+@media (min-width: 760px) {
+  :root { --lateral: 32px; }
+}
+
+/* =========================================================
+   Animações e células decorativas (vieram do ExamIA)
+   Tudo aqui fica parado para quem pediu "menos movimento" no sistema.
+   ========================================================= */
+
+/* ---------- Células nas laterais ----------
+   Ficam atrás de todo o conteúdo e são cortadas na borda da tela.
+   A cor das linhas já vem na própria imagem (#DCE2D3, um pouco mais escura que o fundo). */
+
+body { position: relative; }
+
+.decoracao {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;       /* corta o que passa da tela, sem criar rolagem para o lado */
+  pointer-events: none;   /* não atrapalha cliques */
+}
+
+.celula {
+  position: absolute;
+  width: 240px;
+  height: auto;
+  transform: rotate(var(--giro));
+}
+
+/* Posição de cada célula. --giro: inclinação | --tempo: duração de um ciclo da flutuação.
+   As de cima ficam em px (não mudam com a altura da página); as outras em % da altura. */
+.cel-topo-dir   { top: 90px;  right: -120px; --giro: -14deg; --tempo: 22s; }
+.cel-meio-esq   { top: 38%;   left: -130px;  --giro: 10deg;  --tempo: 19s; }
+.cel-baixo-dir  { top: 72%;   right: -110px; --giro: 18deg;  --tempo: 25s; }
+
+@media (min-width: 760px) {
+  .celula { width: 400px; }
+  .cel-topo-dir  { right: -170px; }
+  .cel-meio-esq  { left: -190px; }
+  .cel-baixo-dir { right: -170px; }
+}
+
+/* Flutuação: sobe um pouco e gira alguns graus, devagar, e volta.
+   Cada célula tem um tempo diferente para não se moverem juntas. */
+@keyframes flutuar {
+  0%, 100% { transform: translateY(0) rotate(var(--giro)); }
+  50%      { transform: translateY(-30px) rotate(calc(var(--giro) + 7deg)); }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .celula { animation: flutuar var(--tempo) ease-in-out infinite; }
+  .cel-meio-esq { animation-delay: -7s; }   /* começam em pontos diferentes do ciclo */
+  .cel-baixo-dir { animation-delay: -13s; }
+}
+
+/* Célula dentro da faixa clara do aviso (Home), atrás do texto */
+.faixa-aviso { position: relative; overflow: hidden; isolation: isolate; }
+.faixa-aviso .celula { z-index: -1; width: 320px; left: -90px; bottom: -110px; --giro: 22deg; --tempo: 26s; animation-delay: -9s; }
+@media (min-width: 760px) {
+  .faixa-aviso .celula { width: 440px; left: -60px; bottom: -150px; }
+}
+
+/* ---------- Aparecer ao rolar ----------
+   Só escondemos as coisas se o JavaScript estiver funcionando (classe "js" no <html>).
+   Se o JS falhar, tudo aparece normalmente, sem animação. */
+
+.js .revelar {
+  opacity: 0;
+  transform: translateY(24px);
+}
+.js .revelar.visivel {
+  opacity: 1;
+  transform: none;
+  transition: opacity 0.9s ease, transform 1s var(--suave);
+  transition-delay: var(--atraso, 0s);  /* atraso opcional, definido no HTML */
+}
+
+/* ---------- Imagens 3D saindo do bloco verde ----------
+   O bloco (.arte) aparece primeiro; depois a imagem sobe de dentro dele.
+   O translateX(-50%) mantém a imagem centralizada no bloco. */
+
+.js .arte img {
+  opacity: 0;
+  transform: translateX(-50%) translateY(40px) scale(0.85);
+}
+.js .arte.visivel img {
+  opacity: 1;
+  transform: translateX(-50%);
+  transition: opacity 0.6s ease, transform 0.9s var(--suave);
+  transition-delay: calc(var(--atraso, 0s) + 0.5s);  /* espera o bloco aparecer */
+}
+
+/* ---------- Tradutor da Home: as linhas do laudo entram uma por uma ---------- */
+
+.js .laudo-lista li { opacity: 0; transform: translateX(-12px); }
+.js .tradutor.visivel .laudo-lista li {
+  opacity: 1;
+  transform: none;
+  transition: opacity 0.5s ease, transform 0.6s var(--suave);
+}
+.js .tradutor.visivel .laudo-lista li:nth-child(1) { transition-delay: 0.5s; }
+.js .tradutor.visivel .laudo-lista li:nth-child(2) { transition-delay: 0.65s; }
+.js .tradutor.visivel .laudo-lista li:nth-child(3) { transition-delay: 0.8s; }
+.js .traducao { opacity: 0; transform: translateY(16px); }
+.js .tradutor.visivel .traducao {
+  opacity: 1;
+  transform: none;
+  transition: opacity 0.6s ease 1.1s, transform 0.7s var(--suave) 1.1s;
+}
+
+/* ---------- Passos do envio (Análise): número, texto e a linha descendo até o próximo ---------- */
+
+@media (min-width: 760px) {
+  .passo-envio { position: relative; }
+  .passo-envio:not(:last-child)::before {
+    content: "";
+    position: absolute;
+    left: 23px;
+    top: 56px;
+    bottom: calc(var(--e-6) * -1 + 8px);
+    width: 2px;
+    background: var(--salvia);
+    transform-origin: top;
+  }
+  .js .passo-envio:not(:last-child)::before { transform: scaleY(0); }
+  .js .passo-envio.visivel::before { transform: scaleY(1); transition: transform 0.7s ease-in-out 0.7s; }
+}
+.js .passo-envio .passo-num { opacity: 0; transform: scale(0.5); }
+.js .passo-envio > div { opacity: 0; transform: translateY(16px); }
+.js .passo-envio.visivel .passo-num { opacity: 1; transform: none; transition: opacity 0.4s ease, transform 0.5s var(--suave); }
+.js .passo-envio.visivel > div { opacity: 1; transform: none; transition: opacity 0.8s ease 0.3s, transform 0.9s var(--suave) 0.3s; }
+/* No celular a div some do layout (display: contents) e não pode ser animada: anima os filhos */
+@media (max-width: 759px) {
+  .js .passo-envio > div { opacity: 1; transform: none; }
+  .js .passo-envio > div > * { opacity: 0; transform: translateY(16px); }
+  .js .passo-envio.visivel > div > * { opacity: 1; transform: none; transition: opacity 0.8s ease 0.3s, transform 0.9s var(--suave) 0.3s; }
+}
+
+/* ---------- Células "sendo desenhadas" ao rolar (página de Aviso) ----------
+   Uma máscara em forma de leque (conic-gradient) esconde a célula e vai abrindo,
+   como o ponteiro de um relógio dando a volta. O js/desenho.js muda --desenho
+   de 0 (escondida) até 1 (inteira) conforme a célula entra na tela.
+   --inicio: de que ângulo o "ponteiro" começa (cada célula começa de um lado). */
+
+@property --desenho {
+  syntax: '<number>';
+  inherits: false;
+  initial-value: 0;
+}
+
+.js .desenhar {
+  -webkit-mask-image: conic-gradient(from var(--inicio, 0deg), #000 calc(var(--desenho) * 380deg - 20deg), transparent calc(var(--desenho) * 380deg));
+  mask-image: conic-gradient(from var(--inicio, 0deg), #000 calc(var(--desenho) * 380deg - 20deg), transparent calc(var(--desenho) * 380deg));
+  transition: --desenho 0.9s ease-out;  /* suaviza: a célula "alcança" a rolagem sem pular */
+}
+
+/* Posições das células da página de Aviso */
+.aviso-cel-1 { top: 70px;  right: -90px;  width: 280px; --giro: -10deg; --tempo: 23s; --inicio: 200deg; }
+.aviso-cel-2 { top: 30%;   left: -150px;  width: 260px; --giro: 12deg;  --tempo: 21s; --inicio: 100deg; }
+.aviso-cel-3 { top: 58%;   right: -150px; width: 300px; --giro: -12deg; --tempo: 27s; --inicio: 10deg; }
+.aviso-cel-4 { top: 82%;   left: -140px;  width: 280px; --giro: -20deg; --tempo: 22s; --inicio: 150deg; }
+@media (min-width: 760px) {
+  .aviso-cel-1 { right: -80px;  width: 460px; }
+  .aviso-cel-2 { left: -200px;  width: 340px; }
+  .aviso-cel-3 { right: -220px; width: 420px; }
+  .aviso-cel-4 { left: -210px;  width: 420px; }
+}
+
+/* Quem pediu "menos movimento": tudo aparece parado e inteiro */
+@media (prefers-reduced-motion: reduce) {
+  .js .revelar,
+  .js .laudo-lista li,
+  .js .traducao,
+  .js .passo-envio .passo-num,
+  .js .passo-envio > div,
+  .js .passo-envio > div > *,
+  .js .passo-envio:not(:last-child)::before { opacity: 1; transform: none; transition: none; }
+  .js .arte img { opacity: 1; transform: translateX(-50%); transition: none; }
+  .js .desenhar { -webkit-mask-image: none; mask-image: none; }
+}

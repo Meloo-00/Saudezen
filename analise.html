@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Analisar exame | Saudezen</title>
+  <meta name="description" content="Envie a foto ou o PDF do seu hemograma e veja cada valor explicado em palavras simples. Projeto escolar: não substitui o médico.">
+  <meta name="theme-color" content="#F5F6F0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Mono:wght@400;500&family=Atkinson+Hyperlegible+Next:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/estilo.css">
+  <!-- Avisa ao CSS que o JavaScript está funcionando (só assim as animações escondem as coisas antes de aparecer) -->
+  <script>document.documentElement.classList.add('js');</script>
+</head>
+<body>
+
+  <!-- Células decorativas nas laterais (ficam atrás de tudo) -->
+  <div class="decoracao" aria-hidden="true">
+    <img class="celula cel-topo-dir" src="imagens/celula-lateral.webp" alt="" width="700" height="700">
+    <img class="celula cel-meio-esq" src="imagens/celula-lateral.webp" alt="" width="700" height="700" loading="lazy">
+  </div>
+
+  <a class="pular" href="#conteudo">Pular para o conteúdo</a>
+
+  <!-- Topo com o menu (igual em todas as páginas) -->
+  <header class="topo">
+    <nav class="menu container" aria-label="Menu principal">
+      <a class="logo" href="index.html" translate="no">
+        <span class="logo-marca" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 20h10"/><path d="M10 20c5.5-2.5.8-6.4 3-10"/><path d="M9.5 9.4c1.1.8 1.8 2.2 2.3 3.7-2 .4-3.5.4-4.8-.3-1.2-.6-2.3-1.9-3-4.2 2.8-.5 4.4 0 5.5.8z"/><path d="M14.1 6a7 7 0 0 0-1.1 4c1.9-.1 3.3-.6 4.3-1.4 1-1 1.6-2.3 1.7-4.6-2.7.1-4 1-4.9 2z"/></svg></span>
+        Saudezen
+      </a>
+
+      <button class="menu-botao" type="button" aria-expanded="false" aria-controls="menu-links">
+        <svg class="icone icone-abrir" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+        <svg class="icone icone-fechar" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
+        Menu
+      </button>
+
+      <ul class="menu-links" id="menu-links">
+        <li><a href="index.html">Início</a></li>
+        <li><a href="doencas.html">Doenças de A a Z</a></li>
+        <li><a href="aviso.html">Aviso</a></li>
+        <li><a href="entrar.html" data-conta>Entrar</a></li>
+        <li><a class="btn" href="analise.html" aria-current="page">Analisar exame</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main id="conteudo">
+    <div class="container">
+
+      <header class="cabeca-pagina analise-cabeca">
+        <div class="cabeca-pagina-texto">
+          <h1 class="revelar">Analise o seu <span class="tom">hemograma</span></h1>
+          <p class="revelar" style="--atraso: 0.15s">Envie a foto ou o PDF do exame e veja cada valor explicado em palavras simples.</p>
+        </div>
+        <div class="analise-arte arte revelar" style="--atraso: 0.2s" aria-hidden="true">
+          <img src="imagens/sangue-site.webp" alt="" width="600" height="600">
+        </div>
+      </header>
+
+      <!-- Quem não entrou na conta vê este bloco no lugar do envio (o JS troca para o envio se a pessoa entrou) -->
+      <section class="portao revelar" style="--atraso: 0.3s" aria-labelledby="titulo-portao">
+        <svg class="portao-icone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        <h2 id="titulo-portao">Entre para analisar o seu exame</h2>
+        <p>A análise com IA é só para quem tem conta, que é grátis. Assim o serviço continua no ar para todo mundo. Seus exames nunca ficam salvos, nem na conta.</p>
+        <div class="portao-acoes">
+          <a class="btn" href="entrar.html?voltar=analise">Entrar ou criar conta</a>
+          <button class="btn-texto ver-exemplo" type="button">Ver um exame de exemplo</button>
+        </div>
+      </section>
+
+      <!-- Envio do exame (só para quem entrou) -->
+      <section class="envio" id="envio" aria-labelledby="titulo-envio" hidden>
+        <h2 id="titulo-envio">Enviar exame</h2>
+
+        <!-- novalidate: em vez do balãozinho do navegador (pequeno e some rápido), o JS mostra a própria mensagem -->
+        <form class="form-envio" novalidate>
+          <!-- Aqui a numeração faz sentido: são passos em ordem -->
+          <ol class="passos-envio">
+            <li class="passo-envio">
+              <span class="passo-num" aria-hidden="true">1</span>
+              <div>
+                <h3>Escolha o exame</h3>
+                <p class="privacidade"><strong>Antes, corte ou cubra o seu nome, CPF e outros dados pessoais.</strong> Basta aparecer a tabela com os valores e as referências.</p>
+
+                <!-- O input de arquivo fica escondido e o <label> inteiro vira a área clicável -->
+                <div class="upload">
+                  <input class="upload-input" type="file" id="arquivo" name="arquivo" accept="application/pdf,image/jpeg,image/png">
+                  <label class="upload-area" for="arquivo">
+                    <svg class="upload-icone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M12 12v6"/><path d="m15 15-3-3-3 3"/></svg>
+                    <span class="upload-titulo">Escolher foto ou PDF</span>
+                    <span class="upload-arrastar">ou arraste o arquivo para cá</span>
+                    <span class="upload-formatos">PDF, JPG ou PNG</span>
+                  </label>
+                  <!-- Prévia do arquivo escolhido. Fica só no navegador; nada é enviado nesse momento. -->
+                  <div class="upload-escolhido" hidden>
+                    <img class="upload-previa" alt="Prévia do exame escolhido" hidden>
+                    <svg class="upload-previa-pdf" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" hidden><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8M16 13H8M16 17H8"/></svg>
+                    <div class="upload-escolhido-texto">
+                      <p>Arquivo escolhido:</p>
+                      <p><strong class="upload-nome"></strong></p>
+                      <button class="btn-texto upload-remover" type="button">Trocar arquivo</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </li>
+
+            <li class="passo-envio">
+              <span class="passo-num" aria-hidden="true">2</span>
+              <div>
+                <h3>Confirme</h3>
+                <!-- O <label> envolve a caixinha e o texto: tocar em qualquer parte marca -->
+                <label class="confirmacao">
+                  <input type="checkbox" id="sem-dados" name="sem-dados" required>
+                  <span>O exame <strong>não mostra meu nome, CPF ou outros dados pessoais</strong>.</span>
+                </label>
+                <label class="confirmacao">
+                  <input type="checkbox" id="entendi" name="entendi" required>
+                  <span>Entendi que o Saudezen <strong>não faz diagnóstico</strong> e não substitui a consulta com um médico. (<a href="aviso.html">Ler o aviso</a>)</span>
+                </label>
+              </div>
+            </li>
+
+            <li class="passo-envio">
+              <span class="passo-num" aria-hidden="true">3</span>
+              <div>
+                <h3>Analise</h3>
+                <p>A IA costuma levar de 10 a 30 segundos.</p>
+                <!-- Mensagem quando falta algo (arquivo ou caixinha). O JS preenche e mostra. -->
+                <div class="mensagem mensagem-atencao form-aviso" role="alert" hidden></div>
+                <div class="envio-acoes">
+                  <button class="btn envio-botao" type="submit">Analisar exame</button>
+                  <button class="btn-texto ver-exemplo" type="button">Ver um exame de exemplo</button>
+                </div>
+              </div>
+            </li>
+          </ol>
+        </form>
+
+        <!-- Estados: o JS mostra um de cada vez. role="status"/"alert" fazem o leitor de tela anunciar. -->
+        <div class="estado estado-carregando" role="status" hidden>
+          <span class="carregando-roda" aria-hidden="true"></span>
+          <div>
+            <p><strong>Analisando o seu exame…</strong></p>
+            <p>Isso pode levar até meio minuto. Não feche a página.</p>
+          </div>
+        </div>
+
+        <div class="estado estado-erro" role="alert" hidden>
+          <div>
+            <p><strong class="erro-titulo">Não conseguimos analisar agora.</strong></p>
+            <p class="erro-texto">Pode ser a internet ou o serviço de IA. Tente de novo ou veja como funciona com o exame de exemplo.</p>
+            <div class="estado-acoes">
+              <button class="btn erro-tentar" type="button">Tentar de novo</button>
+              <button class="btn btn-contorno ver-exemplo" type="button">Ver exame de exemplo</button>
+              <a class="btn erro-entrar" href="entrar.html?voltar=analise" hidden>Entrar de novo</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Resultado: fica escondido até a análise terminar -->
+      <section class="resultado" id="resultado" aria-labelledby="titulo-resultado" hidden>
+        <div class="resultado-cabeca">
+          <h2 id="titulo-resultado" tabindex="-1">Resultado</h2>
+          <span class="etiqueta resultado-etiqueta" hidden>Exame de exemplo (fictício)</span>
+        </div>
+
+        <div class="resumo">
+          <h3>Resumo</h3>
+          <p class="resumo-contagem"><!-- selos com a contagem (JS) --></p>
+          <div class="resumo-texto"><!-- parágrafos do resumo (JS) --></div>
+          <p class="resumo-aviso">Isto não é um diagnóstico. Converse com um médico sobre o seu resultado.</p>
+        </div>
+
+        <h3 class="resultado-subtitulo">Item por item</h3>
+        <p>Na mesma ordem do exame, para você conferir com o papel.</p>
+        <ul class="itens"><!-- um item para cada valor (JS) --></ul>
+
+        <div class="resultado-fim">
+          <p><strong>A IA pode errar ao ler o exame.</strong> Confira os valores com o seu papel e leve o exame a um profissional de saúde, principalmente se algum item estiver fora da referência.</p>
+          <button class="btn resultado-outro" type="button">Analisar outro exame</button>
+        </div>
+      </section>
+
+      <!-- Molde de um item do resultado. O <template> não aparece: o JS copia e preenche. -->
+      <template id="molde-item">
+        <li class="item">
+          <div class="item-topo">
+            <h4 class="item-nome"></h4>
+            <span class="selo"></span>
+          </div>
+          <p class="item-valor"><strong></strong> <span></span></p>
+          <p class="item-explicacao"></p>
+        </li>
+      </template>
+
+    </div>
+  </main>
+
+  <!-- Rodapé (igual em todas as páginas) -->
+  <footer class="rodape">
+    <div class="container">
+      <div class="rodape-grade">
+        <div>
+          <h2 translate="no">Saudezen</h2>
+          <p>Saúde explicada em palavras simples. Projeto escolar do ITB Brasílio Flores de Azevedo (FIEB).</p>
+        </div>
+        <nav aria-label="Páginas do site">
+          <h2>Páginas</h2>
+          <ul class="rodape-links">
+            <li><a href="index.html">Início</a></li>
+            <li><a href="doencas.html">Doenças de A a Z</a></li>
+            <li><a href="analise.html">Analisar exame</a></li>
+            <li><a href="aviso.html">Aviso</a></li>
+          </ul>
+        </nav>
+        <!-- TROCAR: confira se a equipe e o e-mail são os mesmos do ExamIA -->
+        <div>
+          <h2>Equipe</h2>
+          <ul>
+            <li>Ana Carolina Guimarães Alves</li>
+            <li>David Alexandre Ferreira Gonçalves</li>
+            <li>Eduardo Melo Gimenes</li>
+            <li>Fabiano Andrade Furlan Junior</li>
+          </ul>
+          <p><a href="mailto:rm98736@estudante.fieb.edu.br">rm98736@estudante.fieb.edu.br</a></p>
+        </div>
+      </div>
+      <p class="rodape-aviso"><strong>O Saudezen não faz diagnóstico</strong> e não substitui a consulta com um médico. Em caso de emergência, ligue para o SAMU no <a href="tel:192">192</a>.</p>
+      <p>© 2026 Saudezen</p>
+    </div>
+  </footer>
+
+  <script src="js/menu.js"></script>
+  <script src="js/conta.js"></script>
+  <script src="js/exemplo.js"></script>
+  <script src="js/analise.js"></script>
+  <script src="js/animacoes.js"></script>
+</body>
+</html>

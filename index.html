@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Saudezen: saúde explicada em palavras simples</title>
+  <meta name="description" content="Entenda seu hemograma com ajuda de IA, consulte doenças de A a Z e acompanhe notícias de saúde, em palavras simples. Projeto escolar: não substitui o médico.">
+  <meta name="theme-color" content="#F5F6F0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Mono:wght@400;500&family=Atkinson+Hyperlegible+Next:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/estilo.css">
+  <!-- Avisa ao CSS que o JavaScript está funcionando (só assim as animações escondem as coisas antes de aparecer) -->
+  <script>document.documentElement.classList.add('js');</script>
+</head>
+<body>
+
+  <!-- Células decorativas nas laterais (ficam atrás de tudo e flutuam devagar) -->
+  <div class="decoracao" aria-hidden="true">
+    <img class="celula cel-topo-dir" src="imagens/celula-lateral.webp" alt="" width="700" height="700">
+    <img class="celula cel-meio-esq" src="imagens/celula-lateral.webp" alt="" width="700" height="700" loading="lazy">
+    <img class="celula cel-baixo-dir" src="imagens/celula-lateral.webp" alt="" width="700" height="700" loading="lazy">
+  </div>
+
+  <a class="pular" href="#conteudo">Pular para o conteúdo</a>
+
+  <!-- Topo com o menu (igual em todas as páginas) -->
+  <header class="topo">
+    <nav class="menu container" aria-label="Menu principal">
+      <a class="logo" href="index.html" translate="no">
+        <span class="logo-marca" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 20h10"/><path d="M10 20c5.5-2.5.8-6.4 3-10"/><path d="M9.5 9.4c1.1.8 1.8 2.2 2.3 3.7-2 .4-3.5.4-4.8-.3-1.2-.6-2.3-1.9-3-4.2 2.8-.5 4.4 0 5.5.8z"/><path d="M14.1 6a7 7 0 0 0-1.1 4c1.9-.1 3.3-.6 4.3-1.4 1-1 1.6-2.3 1.7-4.6-2.7.1-4 1-4.9 2z"/></svg></span>
+        Saudezen
+      </a>
+
+      <button class="menu-botao" type="button" aria-expanded="false" aria-controls="menu-links">
+        <svg class="icone icone-abrir" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+        <svg class="icone icone-fechar" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
+        Menu
+      </button>
+
+      <ul class="menu-links" id="menu-links">
+        <li><a href="index.html" aria-current="page">Início</a></li>
+        <li><a href="doencas.html">Doenças de A a Z</a></li>
+        <li><a href="aviso.html">Aviso</a></li>
+        <li><a href="entrar.html" data-conta>Entrar</a></li>
+        <li><a class="btn" href="analise.html">Analisar exame</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main id="conteudo">
+
+    <!-- Topo: o que é o site + o "tradutor" (mostra na prática o que a IA faz) -->
+    <section class="hero container" aria-labelledby="titulo-principal">
+      <div class="hero-texto">
+        <h1 id="titulo-principal" class="revelar">Exames e doenças explicados em <span class="tom">palavras simples</span></h1>
+        <p class="revelar" style="--atraso: 0.15s">O Saudezen traduz o seu hemograma com ajuda de inteligência artificial e explica as doenças mais comuns, sem termos difíceis.</p>
+        <div class="hero-acoes revelar" style="--atraso: 0.3s">
+          <a class="btn" href="analise.html">Analisar meu hemograma</a>
+          <a class="btn btn-contorno" href="doencas.html">Procurar uma doença</a>
+        </div>
+        <p class="hero-nota revelar" style="--atraso: 0.45s">
+          <svg class="icone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+          <span>Não substitui o médico. <a href="aviso.html">Leia o aviso</a>.</span>
+        </p>
+      </div>
+
+      <!-- Tradutor: um pedaço de laudo fictício. Tocar num item mostra a tradução embaixo.
+           Sem JavaScript, a primeira tradução já aparece escrita. -->
+      <figure class="tradutor revelar" style="--atraso: 0.2s" aria-labelledby="tradutor-legenda">
+        <div class="laudo">
+          <p class="laudo-cabeca"><span>Como está no exame</span><span>Referência</span></p>
+          <ul class="laudo-lista">
+            <li>
+              <button class="laudo-linha" type="button" aria-pressed="true" aria-controls="traducao" data-item="0">
+                <span class="laudo-nome">Hemoglobina</span>
+                <span class="laudo-valor">13,8 g/dL</span>
+                <span class="laudo-ref">13,0 a 17,0</span>
+              </button>
+            </li>
+            <li>
+              <button class="laudo-linha" type="button" aria-pressed="false" aria-controls="traducao" data-item="1">
+                <span class="laudo-nome">Leucócitos</span>
+                <span class="laudo-valor"><span class="marca" aria-hidden="true">▲ </span>11.900 /mm³</span>
+                <span class="laudo-ref">4.000 a 11.000</span>
+              </button>
+            </li>
+            <li>
+              <button class="laudo-linha" type="button" aria-pressed="false" aria-controls="traducao" data-item="2">
+                <span class="laudo-nome">Plaquetas</span>
+                <span class="laudo-valor"><span class="marca" aria-hidden="true">▼ </span>138.000 /mm³</span>
+                <span class="laudo-ref">150.000 a 450.000</span>
+              </button>
+            </li>
+          </ul>
+        </div>
+
+        <div class="traducao" id="traducao" aria-live="polite">
+          <div class="traducao-texto">
+            <div class="traducao-rotulo">
+              <strong>Hemoglobina, em palavras simples</strong>
+              <span class="selo selo-normal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Normal</span>
+            </div>
+            <p>É a parte do sangue que carrega o oxigênio. O valor está dentro da referência.</p>
+          </div>
+        </div>
+
+        <figcaption class="tradutor-legenda" id="tradutor-legenda">Exemplo com um exame fictício. Toque em um item do exame para ver a explicação.</figcaption>
+      </figure>
+    </section>
+
+    <!-- Aviso curto, logo depois do topo, com link para a página completa -->
+    <section class="secao container" aria-labelledby="titulo-faixa-aviso">
+      <div class="faixa-aviso">
+        <img class="celula" src="imagens/celula-faixa.webp" alt="" aria-hidden="true" width="700" height="700" loading="lazy">
+        <h2 id="titulo-faixa-aviso">O Saudezen explica. <span class="tom">Quem diagnostica é o médico.</span></h2>
+        <p>Use o site para entender melhor e levar perguntas para a consulta. Se algo estiver fora da referência, ou se você não se sentir bem, procure um profissional de saúde.</p>
+        <div class="faixa-aviso-acoes">
+          <a class="btn" href="aviso.html">Ler o aviso completo</a>
+          <p>Emergência: <a href="tel:192">ligue 192</a> (SAMU)</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Notícias em carrossel: troca sozinho a cada 8 segundos (js/noticias.js).
+         Sem JavaScript, as notícias aparecem uma embaixo da outra.
+         TROCAR: por enquanto são fixas; para atualizar, mude os textos abaixo.
+         A ideia de deixá-las automáticas está em docs/ideias-futuras.md -->
+    <section class="secao container carrossel" id="noticias" aria-labelledby="titulo-noticias" aria-roledescription="carrossel">
+      <div class="noticias-cabeca">
+        <div>
+          <h2 class="titulo-secao" id="titulo-noticias">Notícias de <span class="tom">saúde</span></h2>
+          <p class="intro-secao">O que saiu de importante na saúde e o que isso muda para você. Resumos de matérias da Agência Brasil.</p>
+        </div>
+        <button class="btn btn-contorno carrossel-pausa" type="button" hidden>
+          <svg class="icone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="14" y="4" width="4" height="16" rx="1"/><rect x="6" y="4" width="4" height="16" rx="1"/></svg>
+          <span>Pausar</span>
+        </button>
+      </div>
+
+      <div class="carrossel-corpo">
+        <div class="carrossel-slides" aria-live="off">
+        <div class="noticia" id="noticia-1" role="group" aria-roledescription="notícia" aria-label="1 de 5">
+          <div class="noticia-arte" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m18 2 4 4"/><path d="m17 7 3-3"/><path d="M19 9 8.7 19.3c-1 1-2.5 1-3.4 0l-.6-.6c-1-1-1-2.5 0-3.4L15 5"/><path d="m9 11 4 4"/><path d="m5 19-3 3"/><path d="m14 4 6 6"/></svg></div>
+          <div class="noticia-corpo">
+            <p class="noticia-meta"><span class="noticia-tema"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m18 2 4 4"/><path d="m17 7 3-3"/><path d="M19 9 8.7 19.3c-1 1-2.5 1-3.4 0l-.6-.6c-1-1-1-2.5 0-3.4L15 5"/><path d="m9 11 4 4"/><path d="m5 19-3 3"/><path d="m14 4 6 6"/></svg>Vacinação</span><time datetime="2026-10-07">7 de outubro</time></p>
+            <h3><a href="https://agenciabrasil.ebc.com.br/saude/noticia/2026-10/sarampo-brasil-intensifica-acoes-face-avanco-nos-eua-e-nas-americas" target="_blank" rel="noopener">Sarampo: Brasil reforça a vacinação com o avanço da doença nas Américas<span class="sr-only"> (abre em outra aba)</span></a></h3>
+            <p class="noticia-resumo">O Brasil registrou 52 casos vindos de fora até 5 de outubro e continua sem transmissão dentro do país. O Ministério da Saúde lembra que a vacina é a principal proteção e é gratuita no SUS.</p>
+            <div class="noticia-voce">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              <p><strong>Para você:</strong> Confira na sua caderneta se você tomou as doses da vacina contra o sarampo. Se não tiver certeza, procure um posto de saúde: a vacina é gratuita.</p>
+            </div>
+            <div class="noticia-rodape">
+              <p class="noticia-doencas">Saiba mais: <a href="doencas.html#sarampo">Sarampo</a></p>
+              <a class="noticia-fonte" href="https://agenciabrasil.ebc.com.br/saude/noticia/2026-10/sarampo-brasil-intensifica-acoes-face-avanco-nos-eua-e-nas-americas" target="_blank" rel="noopener">Ler na Agência Brasil <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h6v6M10 14 21 3M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg><span class="sr-only">(abre em outra aba)</span></a>
+            </div>
+          </div>
+        </div>
+        <div class="noticia" id="noticia-2" role="group" aria-roledescription="notícia" aria-label="2 de 5">
+          <div class="noticia-arte" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12.8 19.6A2 2 0 1 0 14 16H2"/><path d="M17.5 8a2.5 2.5 0 1 1 2 4H2"/><path d="M9.8 4.4A2 2 0 1 1 11 8H2"/></svg></div>
+          <div class="noticia-corpo">
+            <p class="noticia-meta"><span class="noticia-tema"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12.8 19.6A2 2 0 1 0 14 16H2"/><path d="M17.5 8a2.5 2.5 0 1 1 2 4H2"/><path d="M9.8 4.4A2 2 0 1 1 11 8H2"/></svg>Vírus respiratórios</span><time datetime="2026-10-08">8 de outubro</time></p>
+            <h3><a href="https://agenciabrasil.ebc.com.br/saude/noticia/2026-10/virus-respiratorios-ainda-estao-em-alta-no-pais-alerta-fiocruz" target="_blank" rel="noopener">Vírus respiratórios ainda estão em alta no país, alerta Fiocruz<span class="sr-only"> (abre em outra aba)</span></a></h3>
+            <p class="noticia-resumo">Rinovírus, metapneumovírus e o vírus da covid seguem em alta. A Fiocruz pede que quem faz parte do grupo prioritário confira se a vacina está em dia.</p>
+            <div class="noticia-voce">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              <p><strong>Para você:</strong> Se você é idoso, gestante ou tem uma doença crônica, confira se as vacinas da gripe e da covid estão em dia. Com sintomas, evite ficar perto de outras pessoas.</p>
+            </div>
+            <div class="noticia-rodape">
+              <p class="noticia-doencas">Saiba mais: <a href="doencas.html#gripe">Gripe</a> <a href="doencas.html#covid-19">Covid-19</a></p>
+              <a class="noticia-fonte" href="https://agenciabrasil.ebc.com.br/saude/noticia/2026-10/virus-respiratorios-ainda-estao-em-alta-no-pais-alerta-fiocruz" target="_blank" rel="noopener">Ler na Agência Brasil <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h6v6M10 14 21 3M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg><span class="sr-only">(abre em outra aba)</span></a>
+            </div>
+          </div>
+        </div>
+        <div class="noticia" id="noticia-3" role="group" aria-roledescription="notícia" aria-label="3 de 5">
+          <div class="noticia-arte" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m8 2 1.88 1.88"/><path d="M14.12 3.88 16 2"/><path d="M9 7.13v-1a3.003 3.003 0 1 1 6 0v1"/><path d="M12 20c-3.3 0-6-2.7-6-6v-3a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v3c0 3.3-2.7 6-6 6"/><path d="M12 20v-9"/><path d="M6.53 9C4.6 8.8 3 7.1 3 5"/><path d="M6 13H2"/><path d="M3 21c0-2.1 1.7-3.9 3.8-4"/><path d="M20.97 5c0 2.1-1.6 3.8-3.5 4"/><path d="M22 13h-4"/><path d="M17.2 17c2.1.1 3.8 1.9 3.8 4"/></svg></div>
+          <div class="noticia-corpo">
+            <p class="noticia-meta"><span class="noticia-tema"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m8 2 1.88 1.88"/><path d="M14.12 3.88 16 2"/><path d="M9 7.13v-1a3.003 3.003 0 1 1 6 0v1"/><path d="M12 20c-3.3 0-6-2.7-6-6v-3a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v3c0 3.3-2.7 6-6 6"/><path d="M12 20v-9"/><path d="M6.53 9C4.6 8.8 3 7.1 3 5"/><path d="M6 13H2"/><path d="M3 21c0-2.1 1.7-3.9 3.8-4"/><path d="M20.97 5c0 2.1-1.6 3.8-3.5 4"/><path d="M22 13h-4"/><path d="M17.2 17c2.1.1 3.8 1.9 3.8 4"/></svg>Mosquito da dengue</span><time datetime="2026-10-08">8 de outubro</time></p>
+            <h3><a href="https://agenciabrasil.ebc.com.br/saude/noticia/2026-10/aedes-aegypti-quase-metade-dos-municipios-esta-em-alerta-ou-risco" target="_blank" rel="noopener">Aedes aegypti: quase metade dos municípios está em alerta ou risco<span class="sr-only"> (abre em outra aba)</span></a></h3>
+            <p class="noticia-resumo">Os casos prováveis de dengue caíram cerca de 70% em 2026, mas o mosquito continua presente. A orientação é acabar com a água parada antes do calor do verão.</p>
+            <div class="noticia-voce">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              <p><strong>Para você:</strong> Reserve 10 minutos por semana para procurar água parada em casa: pratos de vaso, garrafas, calhas, pneus e caixas-d'água sem tampa.</p>
+            </div>
+            <div class="noticia-rodape">
+              <p class="noticia-doencas">Saiba mais: <a href="doencas.html#dengue">Dengue</a> <a href="doencas.html#chikungunya">Chikungunya</a> <a href="doencas.html#zika">Zika</a></p>
+              <a class="noticia-fonte" href="https://agenciabrasil.ebc.com.br/saude/noticia/2026-10/aedes-aegypti-quase-metade-dos-municipios-esta-em-alerta-ou-risco" target="_blank" rel="noopener">Ler na Agência Brasil <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h6v6M10 14 21 3M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg><span class="sr-only">(abre em outra aba)</span></a>
+            </div>
+          </div>
+        </div>
+        <div class="noticia" id="noticia-4" role="group" aria-roledescription="notícia" aria-label="4 de 5">
+          <div class="noticia-arte" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20.94c1.5 0 2.75 1.06 4 1.06 3 0 6-8 6-12.22A4.91 4.91 0 0 0 17 5c-2.22 0-4 1.44-5 2-1-.56-2.78-2-5-2a4.9 4.9 0 0 0-5 4.78C2 14 5 22 8 22c1.25 0 2.5-1.06 4-1.06Z"/><path d="M10 2c1 .5 2 2 2 5"/></svg></div>
+          <div class="noticia-corpo">
+            <p class="noticia-meta"><span class="noticia-tema"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20.94c1.5 0 2.75 1.06 4 1.06 3 0 6-8 6-12.22A4.91 4.91 0 0 0 17 5c-2.22 0-4 1.44-5 2-1-.56-2.78-2-5-2a4.9 4.9 0 0 0-5 4.78C2 14 5 22 8 22c1.25 0 2.5-1.06 4-1.06Z"/><path d="M10 2c1 .5 2 2 2 5"/></svg>Alimentação</span><time datetime="2026-10-07">7 de outubro</time></p>
+            <h3><a href="https://agenciabrasil.ebc.com.br/saude/noticia/2026-10/oms-lanca-guia-para-enfrentar-obesidade-em-criancas-e-adolescentes" target="_blank" rel="noopener">OMS lança guia para enfrentar a obesidade em crianças e adolescentes<span class="sr-only"> (abre em outra aba)</span></a></h3>
+            <p class="noticia-resumo">A obesidade nessa idade ficou quatro vezes mais comum desde 1990. O guia recomenda alimentação, atividade física e mudança de hábitos, e desaconselha remédios e cirurgia antes dos 10 anos.</p>
+            <div class="noticia-voce">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              <p><strong>Para você:</strong> Mais comida feita em casa, menos ultraprocessados e mais tempo brincando ajudam a família toda. Para crianças, converse com o pediatra antes de qualquer dieta.</p>
+            </div>
+            <div class="noticia-rodape">
+              <p class="noticia-doencas">Saiba mais: <a href="doencas.html#diabetes">Diabetes</a></p>
+              <a class="noticia-fonte" href="https://agenciabrasil.ebc.com.br/saude/noticia/2026-10/oms-lanca-guia-para-enfrentar-obesidade-em-criancas-e-adolescentes" target="_blank" rel="noopener">Ler na Agência Brasil <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h6v6M10 14 21 3M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg><span class="sr-only">(abre em outra aba)</span></a>
+            </div>
+          </div>
+        </div>
+        <div class="noticia" id="noticia-5" role="group" aria-roledescription="notícia" aria-label="5 de 5">
+          <div class="noticia-arte" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/><path d="M3.22 12H9.5l.5-1 2 4.5 2-7 1.5 3.5h5.27"/></svg></div>
+          <div class="noticia-corpo">
+            <p class="noticia-meta"><span class="noticia-tema"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/><path d="M3.22 12H9.5l.5-1 2 4.5 2-7 1.5 3.5h5.27"/></svg>Prevenção</span><time datetime="2026-10-07">7 de outubro</time></p>
+            <h3><a href="https://agenciabrasil.ebc.com.br/saude/noticia/2026-10/melhor-investimento-em-saude-pode-evitar-739-mil-mortes-no-brasil" target="_blank" rel="noopener">Investir melhor em saúde pode evitar 739 mil mortes no Brasil<span class="sr-only"> (abre em outra aba)</span></a></h3>
+            <p class="noticia-resumo">Um estudo aponta que gastar melhor em prevenção, como vacinação e exames de rotina, poderia aumentar a expectativa de vida em cinco anos até 2050.</p>
+            <div class="noticia-voce">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              <p><strong>Para você:</strong> Manter as vacinas e os exames de rotina em dia é uma das formas mais simples de se prevenir. Muitos deles são gratuitos no SUS.</p>
+            </div>
+            <div class="noticia-rodape">
+              <p class="noticia-doencas">Saiba mais: <a href="doencas.html#hipertensao">Pressão alta</a> <a href="doencas.html#diabetes">Diabetes</a></p>
+              <a class="noticia-fonte" href="https://agenciabrasil.ebc.com.br/saude/noticia/2026-10/melhor-investimento-em-saude-pode-evitar-739-mil-mortes-no-brasil" target="_blank" rel="noopener">Ler na Agência Brasil <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h6v6M10 14 21 3M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg><span class="sr-only">(abre em outra aba)</span></a>
+            </div>
+          </div>
+        </div>
+        </div>
+
+        <ul class="carrossel-lista" aria-label="Escolha a notícia" hidden>
+          <li>
+            <button class="carrossel-botao" type="button" aria-controls="noticia-1" aria-current="true">
+              <span class="carrossel-botao-tema">Vacinação</span>
+              <span class="carrossel-botao-titulo">Sarampo: Brasil reforça a vacinação com o avanço da doença nas Américas</span>
+              <span class="carrossel-barra" aria-hidden="true"><span></span></span>
+            </button>
+          </li>
+          <li>
+            <button class="carrossel-botao" type="button" aria-controls="noticia-2">
+              <span class="carrossel-botao-tema">Vírus respiratórios</span>
+              <span class="carrossel-botao-titulo">Vírus respiratórios ainda estão em alta no país, alerta Fiocruz</span>
+              <span class="carrossel-barra" aria-hidden="true"><span></span></span>
+            </button>
+          </li>
+          <li>
+            <button class="carrossel-botao" type="button" aria-controls="noticia-3">
+              <span class="carrossel-botao-tema">Mosquito da dengue</span>
+              <span class="carrossel-botao-titulo">Aedes aegypti: quase metade dos municípios está em alerta ou risco</span>
+              <span class="carrossel-barra" aria-hidden="true"><span></span></span>
+            </button>
+          </li>
+          <li>
+            <button class="carrossel-botao" type="button" aria-controls="noticia-4">
+              <span class="carrossel-botao-tema">Alimentação</span>
+              <span class="carrossel-botao-titulo">OMS lança guia para enfrentar a obesidade em crianças e adolescentes</span>
+              <span class="carrossel-barra" aria-hidden="true"><span></span></span>
+            </button>
+          </li>
+          <li>
+            <button class="carrossel-botao" type="button" aria-controls="noticia-5">
+              <span class="carrossel-botao-tema">Prevenção</span>
+              <span class="carrossel-botao-titulo">Investir melhor em saúde pode evitar 739 mil mortes no Brasil</span>
+              <span class="carrossel-barra" aria-hidden="true"><span></span></span>
+            </button>
+          </li>
+        </ul>
+      </div>
+
+      <p class="noticias-nota">Os resumos e as dicas foram escritos pela equipe do Saudezen. O texto completo e os direitos de cada matéria são da Agência Brasil.</p>
+    </section>
+
+    <!-- Sobre a página Doenças de A a Z: só a explicação e o link (a busca fica na própria página) -->
+    <section class="secao container" id="doencas" aria-labelledby="titulo-procurar">
+      <div class="procurar">
+        <div>
+          <h2 class="titulo-secao" id="titulo-procurar">Doenças de <span class="tom">A a Z</span></h2>
+          <p class="intro-secao">37 doenças comuns no Brasil, explicadas em palavras simples a partir das páginas do Ministério da Saúde. Dá para procurar pelo nome ou pela primeira letra.</p>
+          <a class="btn procurar-todas" href="doencas.html">Ver as doenças de A a Z</a>
+        </div>
+
+        <div class="procurar-partes">
+          <h3>Em cada doença, você encontra</h3>
+          <ul>
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></svg>
+              <p><strong>O que é</strong> e como se pega</p>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 12h-2.48a2 2 0 0 0-1.93 1.46l-2.35 8.36a.25.25 0 0 1-.48 0L9.24 2.18a.25.25 0 0 0-.48 0l-2.35 8.36A2 2 0 0 1 4.49 12H2"/></svg>
+              <p><strong>Os sinais</strong> mais comuns</p>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg>
+              <p><strong>Como se prevenir</strong> e se cuidar</p>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+              <p><strong>Quando procurar</strong> ajuda médica</p>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Rodapé (igual em todas as páginas) -->
+  <footer class="rodape">
+    <div class="container">
+      <div class="rodape-grade">
+        <div>
+          <h2 translate="no">Saudezen</h2>
+          <p>Saúde explicada em palavras simples. Projeto escolar do ITB Brasílio Flores de Azevedo (FIEB).</p>
+        </div>
+        <nav aria-label="Páginas do site">
+          <h2>Páginas</h2>
+          <ul class="rodape-links">
+            <li><a href="index.html">Início</a></li>
+            <li><a href="doencas.html">Doenças de A a Z</a></li>
+            <li><a href="analise.html">Analisar exame</a></li>
+            <li><a href="aviso.html">Aviso</a></li>
+          </ul>
+        </nav>
+        <!-- TROCAR: confira se a equipe e o e-mail são os mesmos do ExamIA -->
+        <div>
+          <h2>Equipe</h2>
+          <ul>
+            <li>Ana Carolina Guimarães Alves</li>
+            <li>David Alexandre Ferreira Gonçalves</li>
+            <li>Eduardo Melo Gimenes</li>
+            <li>Fabiano Andrade Furlan Junior</li>
+          </ul>
+          <p><a href="mailto:rm98736@estudante.fieb.edu.br">rm98736@estudante.fieb.edu.br</a></p>
+        </div>
+      </div>
+      <p class="rodape-aviso"><strong>O Saudezen não faz diagnóstico</strong> e não substitui a consulta com um médico. Em caso de emergência, ligue para o SAMU no <a href="tel:192">192</a>.</p>
+      <p>© 2026 Saudezen</p>
+    </div>
+  </footer>
+
+  <script src="js/menu.js"></script>
+  <script src="js/conta.js"></script>
+  <script src="js/tradutor.js"></script>
+  <script src="js/noticias.js"></script>
+  <script src="js/animacoes.js"></script>
+</body>
+</html>

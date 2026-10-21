@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Entrar | Saudezen</title>
+  <meta name="description" content="Entre ou crie a sua conta gratuita para usar a IA que explica o hemograma.">
+  <meta name="theme-color" content="#F5F6F0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Mono:wght@400;500&family=Atkinson+Hyperlegible+Next:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/estilo.css">
+  <!-- Avisa ao CSS que o JavaScript está funcionando (só assim as animações escondem as coisas antes de aparecer) -->
+  <script>document.documentElement.classList.add('js');</script>
+</head>
+<body>
+
+  <!-- Células decorativas nas laterais (ficam atrás de tudo) -->
+  <div class="decoracao" aria-hidden="true">
+    <img class="celula cel-topo-dir" src="imagens/celula-lateral.webp" alt="" width="700" height="700">
+    <img class="celula cel-meio-esq" src="imagens/celula-lateral.webp" alt="" width="700" height="700" loading="lazy">
+  </div>
+
+  <a class="pular" href="#conteudo">Pular para o conteúdo</a>
+
+  <!-- Topo com o menu (igual em todas as páginas) -->
+  <header class="topo">
+    <nav class="menu container" aria-label="Menu principal">
+      <a class="logo" href="index.html" translate="no">
+        <span class="logo-marca" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 20h10"/><path d="M10 20c5.5-2.5.8-6.4 3-10"/><path d="M9.5 9.4c1.1.8 1.8 2.2 2.3 3.7-2 .4-3.5.4-4.8-.3-1.2-.6-2.3-1.9-3-4.2 2.8-.5 4.4 0 5.5.8z"/><path d="M14.1 6a7 7 0 0 0-1.1 4c1.9-.1 3.3-.6 4.3-1.4 1-1 1.6-2.3 1.7-4.6-2.7.1-4 1-4.9 2z"/></svg></span>
+        Saudezen
+      </a>
+
+      <button class="menu-botao" type="button" aria-expanded="false" aria-controls="menu-links">
+        <svg class="icone icone-abrir" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+        <svg class="icone icone-fechar" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
+        Menu
+      </button>
+
+      <ul class="menu-links" id="menu-links">
+        <li><a href="index.html">Início</a></li>
+        <li><a href="doencas.html">Doenças de A a Z</a></li>
+        <li><a href="aviso.html">Aviso</a></li>
+        <li><a href="entrar.html" aria-current="page" data-conta>Entrar</a></li>
+        <li><a class="btn" href="analise.html">Analisar exame</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main id="conteudo">
+    <div class="container">
+
+      <header class="cabeca-pagina">
+        <h1 class="revelar">Entre na <span class="tom">sua conta</span></h1>
+        <p class="revelar" style="--atraso: 0.15s">Com uma conta, você pode usar a IA que explica o seu hemograma. É grátis.</p>
+      </header>
+
+      <div class="entrar">
+        <div class="cartao-form revelar" style="--atraso: 0.25s">
+
+          <!-- Login ainda não configurado (ou site aberto direto do computador) -->
+          <div class="mensagem mensagem-info login-desligado" role="status" hidden>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+            <p>O login ainda não está funcionando nesta versão do site. Enquanto isso, você pode ver como a análise funciona com o <a href="analise.html#exemplo">exame de exemplo</a>.</p>
+          </div>
+
+          <!-- Quem já entrou -->
+          <div class="conta-logada" hidden>
+            <h2>Você está na sua conta</h2>
+            <p>E-mail: <strong class="conta-email"></strong></p>
+            <div class="conta-acoes">
+              <a class="btn" href="analise.html">Analisar meu exame</a>
+              <button class="btn btn-contorno conta-sair" type="button">Sair da conta</button>
+            </div>
+          </div>
+
+          <!-- Entrar / Criar conta -->
+          <div class="conta-forms">
+            <div class="abas" role="tablist" aria-label="Escolha uma opção">
+              <button class="aba" type="button" role="tab" id="aba-entrar" aria-selected="true" aria-controls="painel-entrar">Entrar</button>
+              <button class="aba" type="button" role="tab" id="aba-criar" aria-selected="false" aria-controls="painel-criar" tabindex="-1">Criar conta</button>
+            </div>
+
+            <!-- novalidate: em vez do balãozinho do navegador (pequeno e some rápido), o JS mostra a própria mensagem -->
+            <form class="form" id="painel-entrar" role="tabpanel" aria-labelledby="aba-entrar" novalidate>
+              <div class="campo">
+                <label for="entrar-email">E-mail</label>
+                <input id="entrar-email" name="email" type="email" inputmode="email" autocomplete="email" spellcheck="false" autocapitalize="off" placeholder="nome@exemplo.com" required>
+              </div>
+              <div class="campo campo-senha">
+                <label for="entrar-senha">Senha</label>
+                <input id="entrar-senha" name="senha" type="password" autocomplete="current-password" required>
+                <button class="mostrar" type="button" aria-controls="entrar-senha" aria-pressed="false">
+                  <svg class="icone-ver" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/></svg>
+                  <span>Mostrar</span>
+                </button>
+              </div>
+              <div class="mensagem form-mensagem" role="alert" hidden></div>
+              <button class="btn" type="submit">Entrar</button>
+              <div class="form-rodape">
+                <button class="btn-texto esqueci" type="button">Esqueci minha senha</button>
+              </div>
+            </form>
+
+            <form class="form" id="painel-criar" role="tabpanel" aria-labelledby="aba-criar" novalidate hidden>
+              <div class="campo">
+                <label for="criar-email">E-mail</label>
+                <input id="criar-email" name="email" type="email" inputmode="email" autocomplete="email" spellcheck="false" autocapitalize="off" placeholder="nome@exemplo.com" required>
+              </div>
+              <div class="campo campo-senha">
+                <label for="criar-senha">Crie uma senha</label>
+                <span class="campo-dica" id="dica-senha">Pelo menos 8 caracteres.</span>
+                <input id="criar-senha" name="senha" type="password" autocomplete="new-password" minlength="8" aria-describedby="dica-senha" required>
+                <button class="mostrar" type="button" aria-controls="criar-senha" aria-pressed="false">
+                  <svg class="icone-ver" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/></svg>
+                  <span>Mostrar</span>
+                </button>
+              </div>
+              <div class="mensagem form-mensagem" role="alert" hidden></div>
+              <button class="btn" type="submit">Criar conta</button>
+            </form>
+
+            <!-- Aparece quando a pessoa volta pelo link de "Esqueci minha senha" -->
+            <form class="form" id="painel-nova-senha" novalidate hidden>
+              <h2>Crie uma nova senha</h2>
+              <div class="campo campo-senha">
+                <label for="nova-senha">Nova senha</label>
+                <span class="campo-dica" id="dica-nova-senha">Pelo menos 8 caracteres.</span>
+                <input id="nova-senha" name="senha" type="password" autocomplete="new-password" minlength="8" aria-describedby="dica-nova-senha" required>
+                <button class="mostrar" type="button" aria-controls="nova-senha" aria-pressed="false">
+                  <svg class="icone-ver" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/></svg>
+                  <span>Mostrar</span>
+                </button>
+              </div>
+              <div class="mensagem form-mensagem" role="alert" hidden></div>
+              <button class="btn" type="submit">Salvar nova senha</button>
+            </form>
+          </div>
+        </div>
+
+        <aside class="entrar-lado revelar" style="--atraso: 0.4s" aria-labelledby="titulo-por-que">
+          <h2 id="titulo-por-que">Por que pedimos uma conta</h2>
+          <ul>
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg>
+              <p><strong>Para a IA continuar no ar.</strong> Ela tem um limite de uso gratuito. A conta evita que alguém use o serviço em excesso e ele pare para todo mundo.</p>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+              <p><strong>Guardamos só o seu e-mail.</strong> A senha fica protegida no serviço de login, e nem a equipe do Saudezen consegue vê-la.</p>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8M16 13H8M16 17H8"/></svg>
+              <p><strong>Seus exames nunca ficam salvos,</strong> nem na sua conta. Fechou a página, eles somem.</p>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></svg>
+              <p><strong>O resto do site é livre.</strong> As doenças de A a Z e as notícias não precisam de conta.</p>
+            </li>
+          </ul>
+        </aside>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Rodapé (igual em todas as páginas) -->
+  <footer class="rodape">
+    <div class="container">
+      <div class="rodape-grade">
+        <div>
+          <h2 translate="no">Saudezen</h2>
+          <p>Saúde explicada em palavras simples. Projeto escolar do ITB Brasílio Flores de Azevedo (FIEB).</p>
+        </div>
+        <nav aria-label="Páginas do site">
+          <h2>Páginas</h2>
+          <ul class="rodape-links">
+            <li><a href="index.html">Início</a></li>
+            <li><a href="doencas.html">Doenças de A a Z</a></li>
+            <li><a href="analise.html">Analisar exame</a></li>
+            <li><a href="aviso.html">Aviso</a></li>
+          </ul>
+        </nav>
+        <!-- TROCAR: confira se a equipe e o e-mail são os mesmos do ExamIA -->
+        <div>
+          <h2>Equipe</h2>
+          <ul>
+            <li>Ana Carolina Guimarães Alves</li>
+            <li>David Alexandre Ferreira Gonçalves</li>
+            <li>Eduardo Melo Gimenes</li>
+            <li>Fabiano Andrade Furlan Junior</li>
+          </ul>
+          <p><a href="mailto:rm98736@estudante.fieb.edu.br">rm98736@estudante.fieb.edu.br</a></p>
+        </div>
+      </div>
+      <p class="rodape-aviso"><strong>O Saudezen não faz diagnóstico</strong> e não substitui a consulta com um médico. Em caso de emergência, ligue para o SAMU no <a href="tel:192">192</a>.</p>
+      <p>© 2026 Saudezen</p>
+    </div>
+  </footer>
+
+  <script src="js/menu.js"></script>
+  <script src="js/conta.js"></script>
+  <script src="js/entrar.js"></script>
+  <script src="js/animacoes.js"></script>
+</body>
+</html>
