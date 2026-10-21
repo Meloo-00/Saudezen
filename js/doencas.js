@@ -13,7 +13,8 @@ const ALFABETO = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
 
 // Ícones (Lucide) usados nos cards
 const ICONE_SETA = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>';
-const ICONE_LINK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h6v6M10 14 21 3M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg>';
+const ICONE_ALERTA = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>';
+const ICONE_LINK ='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h6v6M10 14 21 3M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg>';
 
 // ---------- 1. Preparar ----------
 
@@ -55,6 +56,14 @@ function criarLista(itens) {
   return ul;
 }
 
+// Nome do link da fonte, descoberto pelo endereço da página
+function nomeDaFonte(endereco) {
+  if (endereco.includes('/inca/')) return 'INCA (Instituto Nacional de Câncer)';
+  if (endereco.includes('/hubrasil/')) return 'HU Brasil (hospitais universitários federais)';
+  if (endereco.includes('bvsms.saude.gov.br')) return 'Biblioteca Virtual em Saúde (Ministério da Saúde)';
+  return 'Ministério da Saúde';
+}
+
 // Um card de doença: <details> abre e fecha sozinho, sem JavaScript
 function criarDoenca(doenca) {
   const li = criar('li');
@@ -90,13 +99,40 @@ function criarDoenca(doenca) {
   cuidados.appendChild(criarLista(doenca.cuidados));
   corpo.appendChild(cuidados);
 
+  // "Como se pega" ou "Por que acontece" (o título vem de dados-doencas.js)
+  // Sem 'em casa' ao lado, ocupa a linha inteira (no computador)
+  const pega = criar('div', doenca.emCasa ? '' : 'doenca-largo');
+  pega.appendChild(criar('h3', '', doenca.comoPega.titulo));
+  pega.appendChild(criarLista(doenca.comoPega.itens));
+  corpo.appendChild(pega);
+
+  // "O que ajuda em casa", "No dia a dia"... (nem toda doença tem)
+  if (doenca.emCasa) {
+    const casa = criar('div');
+    casa.appendChild(criar('h3', '', doenca.emCasa.titulo));
+    casa.appendChild(criarLista(doenca.emCasa.itens));
+    corpo.appendChild(casa);
+  }
+
+  // Quando não dá para cuidar em casa: caixa âmbar com ícone + texto
+  // (a cor nunca é o único sinal)
+  if (doenca.alerta) {
+    const alerta = criar('div', 'doenca-alerta');
+    const titulo = criar('h3');
+    titulo.innerHTML = ICONE_ALERTA;
+    titulo.appendChild(document.createTextNode('Não dá para tratar em casa'));
+    alerta.appendChild(titulo);
+    alerta.appendChild(criar('p', '', doenca.alerta));
+    corpo.appendChild(alerta);
+  }
+
   const ajuda = criar('div', 'doenca-ajuda');
   ajuda.appendChild(criar('h3', '', 'Quando procurar ajuda'));
   ajuda.appendChild(criar('p', '', doenca.ajuda));
   corpo.appendChild(ajuda);
 
   const fonte = criar('p', 'doenca-fonte', 'Fonte: ');
-  const link = criar('a', '', 'Ministério da Saúde');
+  const link = criar('a', '', nomeDaFonte(doenca.fonte));
   link.href = doenca.fonte;
   link.target = '_blank';
   link.rel = 'noopener';

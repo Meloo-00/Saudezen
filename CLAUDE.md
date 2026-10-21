@@ -9,10 +9,18 @@ Site de saúde em linguagem simples. Projeto escolar (protótipo), sucessor do E
    fixas → "Doenças de A a Z" (só a explicação: o que cada doença traz + botão para a página;
    sem busca nem letras, pedido do usuário).
 2. Doenças A-Z (`doencas.html`): lista montada por `js/doencas.js` a partir de
-   `js/dados-doencas.js` (37 doenças, fonte: páginas do Ministério da Saúde "Saúde de A a Z").
+   `js/dados-doencas.js` (125 doenças). Fontes: só oficiais. MS "Saúde de A a Z", BVS/MS "Dicas em Saúde",
+   gov.br/aids (ISTs), INCA (cânceres), Linhas de Cuidado do MS e HU Brasil. O nome do link da fonte
+   sai do endereço (`nomeDaFonte` em `js/doencas.js`). Doença sem página oficial para o público NÃO entra.
    Busca com lupa filtra na hora, ignora acentos e compara o COMEÇO das palavras
    ("pressao" acha Hipertensão, não Depressão). Busca vai para o endereço (?busca=).
    Cada doença é um `<details>`; link direto abre ela (`doencas.html#dengue`).
+   Partes de cada doença: O que é · Sinais · Prevenção e cuidados · "Como se pega" ou "Por que
+   acontece" · "O que ajuda em casa" / "No dia a dia" / "Sobre o tratamento" · caixa âmbar
+   "Não dá para tratar em casa" (AVC, infarto, meningite, coqueluche, febre amarela, pólio,
+   leptospirose) · Quando procurar ajuda · Fonte. Conteúdo novo (20/10/2026) tirado das páginas do
+   MS, sem nome de remédio nem dose. Herpes usa a página "Herpes simples" da BVS/MS (a página
+   "herpes" do gov.br é sobre cobreiro).
 3. Entrar (`entrar.html`, `js/entrar.js`): entrar, criar conta, esqueci a senha, sair (Supabase).
 4. Análise (`analise.html`, `js/analise.js`): IA do hemograma. Sem login mostra o "portão";
    o exame de exemplo funciona sem login (`analise.html#exemplo`).
@@ -73,7 +81,7 @@ Site de saúde em linguagem simples. Projeto escolar (protótipo), sucessor do E
 ## Plano e status
 - [x] Base (git, CSS, imagens)
 - [x] Home com tradutor, busca, notícias e aviso
-- [x] Doenças A-Z com busca (37 doenças)
+- [x] Doenças A-Z com busca (125 doenças: 37 em 08/10 + 88 em 21/10/2026)
 - [x] Entrar (código pronto; falta criar o projeto no Supabase)
 - [x] Análise com login no servidor e exame de exemplo
 - [x] Aviso
@@ -81,26 +89,26 @@ Site de saúde em linguagem simples. Projeto escolar (protótipo), sucessor do E
 - [ ] Publicar na Vercel e testar login + análise de verdade no celular
 - [ ] Conferir equipe/e-mail do rodapé (copiados do ExamIA)
 - [ ] Data da apresentação (ainda não informada)
-- [ ] Primeiro commit: NADA foi salvo no git ainda (perguntar antes de commitar)
+- [x] Primeiro commit (20/10/2026)
+- [x] Doenças detalhadas: como se pega + o que ajuda em casa (sem seção de sintomas, decisão do usuário)
 
-## Próxima sessão: começar por aqui (anotado em 09/10/2026)
-1. ESPERANDO RESPOSTA do usuário sobre as doenças mais detalhadas (pedido dele):
-   - Formato proposto para as 37: novas partes "Como se pega" e "O que ajuda a aliviar em casa".
-   - Só medidas que o Ministério da Saúde recomenda; sem nome de remédio nem dose
-     ("use o que o profissional indicar" + alertas oficiais, ex.: dengue = não tomar AAS/ibuprofeno).
-   - Doenças sem alívio em casa (infarto, AVC, meningite): no lugar, alerta "ligue 192".
-   - Exemplo já mostrado (Dengue): beber bastante líquido mesmo sem sede, descansar, febre/dor só
-     com o remédio indicado, não tomar AAS nem anti-inflamatórios.
-   - Perguntado: criar uma seção de SINTOMAS comuns (cólica, febre, dor de cabeça, diarreia)?
-     O exemplo do usuário ("cólica: compressa de água quente") é sintoma, não doença.
-   - Precisa mudar `js/dados-doencas.js` (campos novos) e `js/doencas.js` (mostrar os campos).
+## Próxima sessão: começar por aqui (anotado em 21/10/2026)
+1. Supabase + Vercel (itens do plano acima). Doenças já feitas.
+   Da lista que o usuário mandou em 21/10, ficaram FORA (decisão dele ou sem fonte oficial):
+   - Não são doenças (decisão do usuário): Autismo, Síndrome de Down, Vacinas. Celulite (BVS diz que é estética).
+   - Vagos: Eritema, Cistos, Disbiose, Má circulação, Retenção de líquidos.
+   - Sem página oficial para o público: Arritmia, Sarna, Otite, H. pylori, Úlcera gástrica, Daltonismo,
+     Pancreatite, Diverticulite, Síndrome do intestino irritável, Colite, Virose, Foliculite, Faringite,
+     Má digestão, Escoliose, Esporão de calcâneo, Tendinite, Gota, Anorexia, Bulimia.
+   - Viraram outro nome de uma doença: Reumatismo, Eczema, Enfisema, Nervo ciático, Intolerância ao glúten, Vaginite.
+   - Fascite plantar entrou no lugar do Esporão (é parecida, mas o usuário não pediu: confirmar se fica).
 2. Pontos fracos que eu (Claude) apontei e ainda estão abertos:
    - Carrossel esconde 4 das 5 notícias; no celular só as barrinhas indicam que há mais.
    - Ícones das notícias são provisórios: ilustrações 3D por tema (como sangue/microscópio)
      ficariam melhores, se o grupo conseguir as imagens.
    - Dicas "Para você" e os links para Diabetes/Pressão alta nas notícias foram escritos pelo
      Claude: alguém do grupo ou um professor da área deve conferir.
-   - Conteúdo das 37 doenças precisa de revisão de alguém da área da saúde.
+   - Conteúdo das 125 doenças precisa de revisão de alguém da área da saúde (prioridade: as 88 novas).
    - Vidro do sumário do Aviso só "aparece" quando uma célula passa atrás dele.
    - Verde vivo dos títulos (`.tom`): manter só nos títulos principais, senão perde o efeito.
    - Topo e rodapé repetidos nos 5 HTML (mudar um = mudar os 5).
