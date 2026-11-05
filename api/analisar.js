@@ -1,27 +1,29 @@
-// Função serverless da Vercel: recebe o exame do site, pede a explicação para o Google Gemini
+// Rota do servidor (servidor.js): recebe o exame do site, pede a explicação para o Google Gemini
 // e devolve o resultado no mesmo formato do exame de exemplo (js/exemplo.js).
 //
 // Este é o ÚNICO arquivo que conhece o provedor de IA. Para trocar de IA no futuro,
 // basta mudar este arquivo; o site não precisa mudar.
 //
-// Ela roda no servidor da Vercel, não no navegador. Por isso pode usar a chave secreta
-// (GEMINI_API_KEY), que fica nas configurações da Vercel e nunca aparece para quem visita o site.
+// Ela roda no servidor, não no navegador. Por isso pode usar a chave secreta
+// (GEMINI_API_KEY), que fica nas variáveis de ambiente e nunca aparece para quem visita o site.
 //
 // Privacidade: nada é salvo. O exame chega, vai para o Gemini, a resposta volta e pronto.
 // (Também não mandamos o exame para o console/log.)
 //
-// Login: só quem entrou na conta pode usar a IA. O site manda o "token" da sessão
-// (cabeçalho Authorization) e esta função pergunta ao Supabase se ele é válido.
+// Login: só quem entrou na conta pode usar a IA. O navegador manda o cookie da sessão
+// sozinho, e esta função confere se ele é de alguém logado (api/conta.js).
 // A conferência é aqui no servidor porque qualquer coisa no navegador pode ser burlada.
+
+const { usuarioDaSessao } = require('./conta');
 
 // Modelos do Gemini (plano gratuito). Tenta um por um, na ordem, até um responder:
 // o mais novo às vezes fica sobrecarregado (erro 503), então há dois de reserva.
-// Para trocar o primeiro sem mexer no código, defina GEMINI_MODELO na Vercel.
+// Para trocar o primeiro sem mexer no código, defina a variável de ambiente GEMINI_MODELO.
 // (O gemini-2.5-flash não serve: dá 404 para chaves novas.)
 const MODELOS = [process.env.GEMINI_MODELO || 'gemini-3.8-flash', 'gemini-3.5-flash', 'gemini-3.7-flash'];
 
 const TIPOS_ACEITOS = ['application/pdf', 'image/jpeg', 'image/png'];
-const TAMANHO_MAXIMO = 4 * 1024 * 1024; // ~4 MB de texto base64 (a Vercel recusa acima de 4,5 MB)
+const TAMANHO_MAXIMO = 4 * 1024 * 1024; // ~4 MB de texto base64
 const SITUACOES = ['normal', 'pouco-acima', 'acima', 'pouco-abaixo', 'abaixo', 'sem-referencia'];
 
 // As regras que a IA deve seguir. É aqui que moram as regras mais importantes do projeto.
@@ -91,20 +93,15 @@ module.exports = async function handler(req, res) {
     return res.status(405).json({ erro: 'metodo' });
   }
 
-  const chave = process.env.GEMINI_API_KEY;
-  if (!chave) {
-    console.error('GEMINI_API_KEY não configurada na Vercel');
-    return res.status(500).json({ erro: 'servidor' });
+  // Confere o login antes de gastar a IA
+  if (!usuarioDaSessao(req)) {
+    return res.status(401).json({ erro: 'login' });
   }
 
-  // Confere o login antes de gastar a IA
-  const logado = await conferirLogin(req.headers.authorization);
-  if (logado === 'sem-config') {
-    console.error('SUPABASE_URL ou SUPABASE_ANON_KEY não configuradas na Vercel');
+  const chave = process.env.GEMINI_API_KEY;
+  if (!chave) {
+    console.error('GEMINI_API_KEY não configurada');
     return res.status(500).json({ erro: 'servidor' });
-  }
-  if (!logado) {
-    return res.status(401).json({ erro: 'login' });
   }
 
   // Confere o que o site mandou
@@ -132,26 +129,6 @@ module.exports = async function handler(req, res) {
 
   return res.status(502).json({ erro: 'servidor' });
 };
-
-// Pergunta ao Supabase se o token da sessão é de alguém logado.
-// Devolve true (logado), false (não logado ou sessão vencida) ou 'sem-config'.
-async function conferirLogin(cabecalho) {
-  const supabaseUrl = process.env.SUPABASE_URL;
-  const supabaseChave = process.env.SUPABASE_ANON_KEY;
-  if (!supabaseUrl || !supabaseChave) return 'sem-config';
-
-  if (typeof cabecalho !== 'string' || !cabecalho.startsWith('Bearer ')) return false;
-
-  try {
-    const resposta = await fetch(supabaseUrl + '/auth/v1/user', {
-      headers: { apikey: supabaseChave, Authorization: cabecalho }
-    });
-    return resposta.ok;
-  } catch (erro) {
-    console.error('Falha ao conferir o login: ' + erro.message);
-    return false;
-  }
-}
 
 // Faz o pedido para a API do Gemini e devolve a resposta já convertida de texto para objeto
 async function perguntarAoGemini(modelo, chave, tipo, dados) {

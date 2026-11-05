@@ -801,6 +801,11 @@ main { display: block; }
 .rodape p { margin-top: var(--e-2); }
 .rodape ul { list-style: none; padding: 0; display: grid; gap: var(--e-1); margin-top: var(--e-3); }
 .rodape-links a { display: inline-flex; align-items: center; min-height: 44px; color: var(--tinta); }
+.rodape-contatos li { display: flex; align-items: flex-start; gap: var(--e-2); }
+.rodape-contatos .icone { margin-top: 0.15em; color: var(--folha); }
+.rodape-contatos .rotulo { display: block; font-size: var(--t-pequeno); color: var(--tinta-suave); }
+/* o e-mail é comprido: deixa quebrar a linha para não estourar a coluna no celular */
+.rodape-contatos a { overflow-wrap: anywhere; }
 .rodape-aviso {
   margin-top: var(--e-6);
   padding-top: var(--e-5);
@@ -1092,64 +1097,81 @@ main { display: block; }
 
 /* ---------- Entrar ---------- */
 
-.entrar {
-  display: grid;
-  gap: var(--e-6);
-  padding-bottom: var(--e-6);
+/* Um cartão só, estreito e no meio da página */
+.login {
+  max-width: 480px;
+  margin: 0 auto;
+  padding: var(--e-7) 0 var(--e-6);
 }
-.cartao-form {
-  padding: var(--e-5);
+.login-cartao {
+  padding: var(--e-6) var(--e-5);
   border-radius: var(--r-grande);
   background: var(--cartao);
   border: 1px solid var(--linha);
+  box-shadow: 0 12px 32px -18px rgba(31, 42, 27, 0.25);
 }
-
-/* Abas "Entrar" / "Criar conta" */
-.abas {
+.login-marca {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 4px;
-  padding: 4px;
-  border-radius: 999px;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  margin-bottom: var(--e-4);
+  border-radius: 14px;
+  background: var(--folha);
+  color: #fff;
+}
+.login-marca svg { width: 26px; height: 26px; }
+
+.tela h1 { font-size: clamp(1.75rem, 1.5rem + 1vw, 2.25rem); font-weight: 800; line-height: 1.15; }
+.tela h1:focus { outline: none; } /* o foco vai para o título ao trocar de tela, só para o leitor de tela */
+.tela-texto { margin-top: var(--e-2); color: var(--tinta-suave); }
+.tela-texto strong { color: var(--tinta); overflow-wrap: anywhere; }
+.tela-nota {
+  margin-top: var(--e-4);
+  padding: var(--e-3) var(--e-4);
+  border-radius: var(--r-pequeno);
   background: var(--areia);
+  font-size: var(--t-pequeno);
 }
-.aba {
-  min-height: 48px;
-  border: 0;
-  border-radius: 999px;
-  background: none;
-  font-weight: 700;
-  color: var(--tinta-suave);
-  cursor: pointer;
-}
-.aba:hover { color: var(--tinta); }
-.aba[aria-selected="true"] { background: #fff; color: var(--tinta); box-shadow: 0 1px 2px rgba(31, 42, 27, 0.15); }
+.tela-troca { margin-top: var(--e-5); text-align: center; color: var(--tinta-suave); }
 
 .form { display: grid; gap: var(--e-5); margin-top: var(--e-5); }
 .form .btn { width: 100%; }
-.form h2 { font-size: var(--t-h3); font-weight: 800; }
-.form-rodape { display: flex; flex-wrap: wrap; justify-content: space-between; gap: var(--e-2); }
 
-.conta-logada { display: grid; gap: var(--e-4); }
-.conta-logada h2 { font-size: var(--t-h3); font-weight: 800; }
-.conta-acoes { display: flex; flex-wrap: wrap; gap: var(--e-3); }
+/* "Senha" de um lado e "Esqueci minha senha" do outro */
+.campo-topo { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 0 var(--e-3); }
 
-.entrar-lado h2 { font-size: var(--t-h3); font-weight: 800; }
-.entrar-lado ul { list-style: none; padding: 0; margin-top: var(--e-4); display: grid; gap: var(--e-4); }
-.entrar-lado li { display: grid; grid-template-columns: 40px 1fr; gap: var(--e-3); align-items: start; }
-.entrar-lado li > svg {
-  width: 40px;
-  height: 40px;
-  padding: 9px;
-  border-radius: 12px;
+/* Telas de aviso (link enviado, conta criada, já entrou): ícone grande em cima */
+.tela-icone {
+  display: grid;
+  place-items: center;
+  width: 72px;
+  height: 72px;
+  margin-bottom: var(--e-4);
+  border-radius: 50%;
   background: var(--broto);
   color: var(--folha-escura);
 }
+.tela-icone svg { width: 34px; height: 34px; }
+/* nas telas de aviso, o ícone grande substitui o logo */
+.login-cartao:has(.tela-aviso:not([hidden])) .login-marca { display: none; }
+.tela-aviso > .btn { width: 100%; margin-top: var(--e-5); }
+.tela-acoes { display: grid; gap: var(--e-3); margin-top: var(--e-5); }
 
-@media (min-width: 900px) {
-  .entrar { grid-template-columns: minmax(0, 520px) 1fr; gap: var(--e-8); align-items: start; }
-  .cartao-form { padding: var(--e-6); }
-  .entrar-lado { padding-top: var(--e-5); }
+.login-privacidade {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: var(--e-2);
+  margin-top: var(--e-4);
+  padding: 0 var(--e-3);
+  font-size: var(--t-pequeno);
+  color: var(--tinta-suave);
+}
+.login-privacidade .icone { margin-top: 0.15em; color: var(--folha); }
+
+@media (min-width: 600px) {
+  .login-cartao { padding: var(--e-7) var(--e-6); }
 }
 
 /* ---------- Análise ---------- */

@@ -41,7 +41,7 @@ const moldeItem     = document.querySelector('#molde-item');
 
 const TIPOS_ACEITOS = ['application/pdf', 'image/jpeg', 'image/png'];
 
-// A Vercel não aceita envios maiores que ~4,5 MB. O arquivo vai "traduzido" em texto
+// O servidor aceita envios de até ~4 MB. O arquivo vai "traduzido" em texto
 // (base64), que fica ~33% maior. Por isso o PDF pode ter no máximo 3 MB.
 // Fotos não têm esse problema: nós diminuímos a foto antes de enviar (veja prepararArquivo).
 const LIMITE_PDF = 3 * 1024 * 1024;        // 3 MB
@@ -76,7 +76,7 @@ function mostrarConforme(estaLogado) {
 // 1º: decide na hora, pelo sinal rápido do navegador (evita a página "pular" enquanto carrega)
 mostrarConforme(Conta.pareceLogado());
 
-// 2º: confirma com o Supabase (pode levar um instante) e corrige, se precisar
+// 2º: confirma com o servidor (pode levar um instante) e corrige, se precisar
 async function conferirConta() {
   const sessao = await Conta.obterSessao();
   if (Boolean(sessao) !== logado) mostrarConforme(Boolean(sessao));
@@ -274,7 +274,7 @@ function diminuirFoto(arquivo) {
   });
 }
 
-// Manda o arquivo para a nossa função na Vercel (api/analisar.js), junto com o "token" do login.
+// Manda o arquivo para o nosso servidor (api/analisar.js). O cookie do login vai junto sozinho.
 // Se passar de TEMPO_LIMITE, desiste (o AbortController é o "botão de cancelar" do fetch).
 async function pedirAnaliseParaIA(arquivo) {
   const sessao = await Conta.obterSessao();
@@ -287,10 +287,7 @@ async function pedirAnaliseParaIA(arquivo) {
   try {
     resposta = await fetch('/api/analisar', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + sessao.access_token
-      },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(arquivo),
       signal: cancelar.signal
     });

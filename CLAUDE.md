@@ -21,7 +21,10 @@ Site de saúde em linguagem simples. Projeto escolar (protótipo), sucessor do E
    leptospirose) · Quando procurar ajuda · Fonte. Conteúdo novo (20/10/2026) tirado das páginas do
    MS, sem nome de remédio nem dose. Herpes usa a página "Herpes simples" da BVS/MS (a página
    "herpes" do gov.br é sobre cobreiro).
-3. Entrar (`entrar.html`, `js/entrar.js`): entrar, criar conta, esqueci a senha, sair (Supabase).
+3. Entrar (`entrar.html`, `js/entrar.js`), redesenhada em 05/11/2026: um cartão só, no meio, com
+   "telas" que o JS troca (`data-tela`): entrar · criar (nome, e-mail, senha) · esqueci · enviado ·
+   nova-senha (aberta por `?token=`) · criada · logada · desligado (file://). Sem a coluna
+   "Por que pedimos uma conta": só uma linha de privacidade embaixo do cartão.
 4. Análise (`analise.html`, `js/analise.js`): IA do hemograma. Sem login mostra o "portão";
    o exame de exemplo funciona sem login (`analise.html#exemplo`).
 5. Aviso (`aviso.html`): limites do site, IA pode errar, dados, quando procurar médico.
@@ -41,13 +44,22 @@ Site de saúde em linguagem simples. Projeto escolar (protótipo), sucessor do E
   Só título, resumo curto escrito por nós, data, fonte e link.
   Nunca copiar o texto da matéria. Ideia de RSS: `docs/ideias-futuras.md`.
 
-## Login e privacidade (LGPD)
-- Exames e resultados nunca são salvos. A conta guarda só o e-mail (no Supabase).
-- `api/config.js` entrega ao site `SUPABASE_URL` e `SUPABASE_ANON_KEY` (variáveis da Vercel).
-  A anon key é pública por natureza; a service_role NUNCA entra no projeto.
-- `api/analisar.js` confere o token no Supabase (`/auth/v1/user`) antes de chamar o Gemini.
-- Chaves só em variáveis de ambiente na Vercel: `GEMINI_API_KEY`, `SUPABASE_URL`, `SUPABASE_ANON_KEY`.
-- Abrindo o arquivo direto no computador (file://), o login aparece como "ainda não funcionando".
+## Login e banco de dados (requisito do trabalho: SQL Server, decidido em 05/11/2026)
+- O site roda NO COMPUTADOR: `npm start` → http://localhost:3000 (`servidor.js`, Express).
+  Supabase e Vercel saíram do projeto.
+- Banco: `banco/bd_login.sql` (script do usuário, SQL Server; NÃO mudar a estrutura sem ele pedir).
+  Tabelas Usuario, RecuperarSenha, LogLogin; o servidor usa SÓ as procedures dele
+  (`api/conta.js` + `api/banco.js`, pacote mssql). Atenção: o script começa com DROP DATABASE.
+- Senha: bcrypt (custo 12). Sessão: cookie HttpOnly "sessao" (na memória do servidor; reiniciar = sair)
+  + cookie "logado=1" só para o menu. Token do "esqueci" vai para o banco em SHA-256.
+- 5 senhas erradas em 15 min (LogLogin) = e-mail bloqueado. Mesma resposta para "e-mail não existe"
+  e "senha errada".
+- "Esqueci minha senha" NÃO manda e-mail: o link aparece no terminal do servidor (protótipo).
+- Variáveis de ambiente (nunca em arquivo): GEMINI_API_KEY, DB_USUARIO, DB_SENHA
+  (opcionais: DB_SERVIDOR=localhost, DB_INSTANCIA=SQLEXPRESS, DB_PORTA, DB_NOME=bd_login, PORT=3000).
+- Só css/, js/, imagens/ e as 5 páginas ficam públicas (servidor.js); api/, banco/ etc. dão 404.
+- Exames e resultados nunca são salvos. Banco guarda nome, e-mail, hash e tentativas de login.
+- `api/analisar.js` confere a sessão (cookie) antes de chamar o Gemini.
 
 ## Design (decidido em 08/10/2026; diferente do ExamIA de propósito)
 - Paleta da mesma família do ExamIA, mas com fundo branco-sálvia em vez de bege:
@@ -82,19 +94,24 @@ Site de saúde em linguagem simples. Projeto escolar (protótipo), sucessor do E
 - [x] Base (git, CSS, imagens)
 - [x] Home com tradutor, busca, notícias e aviso
 - [x] Doenças A-Z com busca (125 doenças: 37 em 08/10 + 88 em 21/10/2026)
-- [x] Entrar (código pronto; falta criar o projeto no Supabase)
+- [x] Entrar redesenhada + login próprio com SQL Server (05/11/2026; testado com banco falso na memória)
 - [x] Análise com login no servidor e exame de exemplo
 - [x] Aviso
-- [ ] Criar o projeto no Supabase e colocar as 3 variáveis na Vercel
-- [ ] Publicar na Vercel e testar login + análise de verdade no celular
-- [ ] Conferir equipe/e-mail do rodapé (copiados do ExamIA)
+- [x] SQL Server 2025 Express instalado (05/11/2026): instância localhostSQLEXPRESS, TCP + SQL Browser
+      ligados, modo misto, "sa" desativado, usuário do Windows é sysadmin (SSMS entra sem senha).
+      Banco criado com banco/bd_login.sql + banco/permissoes-site.sql (login "saudezen_app", só EXECUTE
+      nas procedures + SELECT no LogLogin). DB_USUARIO/DB_SENHA salvas nas variáveis do usuário do Windows.
+      Testado de verdade: criar, duplicado, senha errada, entrar, esqueci + nova senha.
+- [ ] SSMS (opcional, para mostrar as tabelas na apresentação)
+- [ ] Testar a análise com GEMINI_API_KEY no computador
+- [x] Rodapé: nomes da equipe trocados por "Contato" (e-mail + telefone FICTÍCIO (11) 4000-0000, sem link de ligar) em 05/11/2026
 - [ ] Data da apresentação (ainda não informada)
 - [x] Primeiro commit (20/10/2026)
 - [x] GitHub: https://github.com/Meloo-00/Saudezen (branch main, push em 21/10/2026)
 - [x] Doenças detalhadas: como se pega + o que ajuda em casa (sem seção de sintomas, decisão do usuário)
 
 ## Próxima sessão: começar por aqui (anotado em 21/10/2026)
-1. Supabase + Vercel (itens do plano acima). Doenças já feitas.
+1. SQL Server (itens do plano acima). Doenças já feitas.
    Da lista que o usuário mandou em 21/10, ficaram FORA (decisão dele ou sem fonte oficial):
    - Não são doenças (decisão do usuário): Autismo, Síndrome de Down, Vacinas. Celulite (BVS diz que é estética).
    - Vagos: Eritema, Cistos, Disbiose, Má circulação, Retenção de líquidos.

@@ -1,47 +1,45 @@
-// Página "Entrar": login, cadastro, "esqueci minha senha" e sair.
-// Quem faz o trabalho de verdade é o Supabase (veja js/conta.js).
+// Página "Entrar": entrar, criar conta, esqueci a senha, nova senha e sair.
+// Quem faz o trabalho de verdade é o servidor (api/conta.js), que usa o banco bd_login.
+// Aqui só mostramos a tela certa e mandamos os dados para ele (veja Conta.pedir em js/conta.js).
 
-const abaEntrar      = document.querySelector('#aba-entrar');
-const abaCriar       = document.querySelector('#aba-criar');
-const formEntrar     = document.querySelector('#painel-entrar');
-const formCriar      = document.querySelector('#painel-criar');
-const formNovaSenha  = document.querySelector('#painel-nova-senha');
-const caixaForms     = document.querySelector('.conta-forms');
-const caixaLogada    = document.querySelector('.conta-logada');
-const caixaDesligado = document.querySelector('.login-desligado');
-const textoEmail     = document.querySelector('.conta-email');
+const telas = document.querySelectorAll('.tela');
+const formEntrar    = document.querySelector('#form-entrar');
+const formCriar     = document.querySelector('#form-criar');
+const formEsqueci   = document.querySelector('#form-esqueci');
+const formNovaSenha = document.querySelector('#form-nova-senha');
 
 // Para onde ir depois de entrar (ex.: entrar.html?voltar=analise volta para a análise)
-const VOLTAR_PARA = new URLSearchParams(location.search).get('voltar') === 'analise' ? 'analise.html' : null;
+const parametros = new URLSearchParams(location.search);
+const VOLTAR_PARA = parametros.get('voltar') === 'analise' ? 'analise.html' : null;
+
+// Token do link de "Esqueci minha senha" (entrar.html?token=...)
+const TOKEN = parametros.get('token');
 
 const ICONE_ATENCAO = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>';
 const ICONE_OK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>';
 
-// ---------- Abas "Entrar" / "Criar conta" ----------
+// ---------- Trocar de tela ----------
 
-function escolherAba(aba) {
-  const ehEntrar = aba === abaEntrar;
-  abaEntrar.setAttribute('aria-selected', ehEntrar);
-  abaCriar.setAttribute('aria-selected', !ehEntrar);
-  // Só a aba escolhida recebe o foco com Tab; as setas trocam de aba (padrão de acessibilidade)
-  abaEntrar.tabIndex = ehEntrar ? 0 : -1;
-  abaCriar.tabIndex = ehEntrar ? -1 : 0;
-  formEntrar.hidden = !ehEntrar;
-  formCriar.hidden = ehEntrar;
+// Mostra só a tela com esse nome (data-tela="...") e esconde as outras.
+// moverFoco: leva o foco para o título da tela nova, para quem usa leitor de tela
+// saber que a tela mudou. Na primeira tela da página não precisa.
+function mostrarTela(nome, moverFoco) {
+  telas.forEach(function (tela) {
+    tela.hidden = tela.dataset.tela !== nome;
+  });
   esconderMensagens();
+  if (moverFoco) document.querySelector('[data-tela="' + nome + '"] h1').focus();
 }
 
-abaEntrar.addEventListener('click', function () { escolherAba(abaEntrar); });
-abaCriar.addEventListener('click', function () { escolherAba(abaCriar); });
-
-// Setas esquerda/direita trocam de aba
-[abaEntrar, abaCriar].forEach(function (aba) {
-  aba.addEventListener('keydown', function (evento) {
-    if (evento.key === 'ArrowRight' || evento.key === 'ArrowLeft') {
-      const outra = aba === abaEntrar ? abaCriar : abaEntrar;
-      escolherAba(outra);
-      outra.focus();
+// Botões com data-ir="criar", data-ir="esqueci" etc. levam para aquela tela
+document.querySelectorAll('[data-ir]').forEach(function (botao) {
+  botao.addEventListener('click', function () {
+    const destino = botao.dataset.ir;
+    // Indo para "Esqueci", aproveita o e-mail que a pessoa já escreveu
+    if (destino === 'esqueci' && formEntrar.email.value) {
+      formEsqueci.email.value = formEntrar.email.value;
     }
+    mostrarTela(destino, true);
   });
 });
 
@@ -65,7 +63,7 @@ function mostrarMensagem(form, texto, tipo) {
   caixa.className = 'mensagem form-mensagem mensagem-' + tipo;
   caixa.innerHTML = tipo === 'ok' ? ICONE_OK : ICONE_ATENCAO;
   const p = document.createElement('p');
-  p.textContent = texto;
+  p.textContent = texto; // textContent (e não innerHTML): o texto nunca vira código
   caixa.appendChild(p);
   caixa.hidden = false;
 }
@@ -82,16 +80,22 @@ function erroNoCampo(form, campo, texto) {
   campo.focus();
 }
 
-// O Supabase responde em inglês; aqui traduzimos para algo que ajude a pessoa a resolver
-function traduzirErro(erro) {
-  const msg = (erro && erro.message ? erro.message : '').toLowerCase();
-  if (msg.includes('invalid login credentials')) return 'E-mail ou senha incorretos. Confira e tente de novo.';
-  if (msg.includes('email not confirmed')) return 'Falta confirmar o seu e-mail. Abra o link que enviamos para a sua caixa de entrada.';
-  if (msg.includes('already registered')) return 'Já existe uma conta com esse e-mail. Use a aba "Entrar".';
-  if (msg.includes('password')) return 'Essa senha não serve. Use pelo menos 8 caracteres.';
-  if (msg.includes('rate limit') || msg.includes('too many')) return 'Muitas tentativas seguidas. Espere alguns minutos e tente de novo.';
-  if (msg.includes('fetch') || msg.includes('network')) return 'Sem conexão com a internet. Confira a sua rede e tente de novo.';
-  return 'Não foi possível concluir agora. Tente de novo em alguns minutos.';
+// O servidor responde com um código curto (ex.: { erro: 'credenciais' }).
+// Aqui viramos o código numa frase que ajude a pessoa a resolver.
+function textoDoErro(resposta) {
+  if (resposta.status === 0) return 'Não foi possível falar com o servidor. Confira a conexão e tente de novo.';
+  switch (resposta.dados.erro) {
+    case 'credenciais':  return 'E-mail ou senha incorretos. Confira e tente de novo.';
+    case 'bloqueado':    return 'Muitas tentativas erradas. Por segurança, espere 15 minutos ou use "Esqueci minha senha".';
+    case 'email-existe': return 'Já existe uma conta com esse e-mail. Entre com ela ou use "Esqueci minha senha".';
+    case 'nome':         return 'Escreva o seu nome.';
+    case 'email':
+    case 'dados':        return 'Escreva o seu e-mail completo, por exemplo: nome@exemplo.com.';
+    case 'senha':        return 'A senha precisa ter pelo menos 8 caracteres.';
+    case 'token':        return 'Este link não vale mais: passou de 1 hora ou já foi usado. Peça outro abaixo.';
+    case 'banco':        return 'O banco de dados não está respondendo. Tente de novo em alguns minutos.';
+    default:             return 'Não foi possível concluir agora. Tente de novo em alguns minutos.';
+  }
 }
 
 function emailValido(texto) {
@@ -110,41 +114,52 @@ function aguardar(form, textoEspera) {
   };
 }
 
-// ---------- Começo: descobre se o login funciona e se a pessoa já entrou ----------
-
-let cliente = null;
-
-async function iniciar() {
-  cliente = await Conta.obterCliente();
-
-  if (!cliente) {
-    caixaDesligado.hidden = false;
-    caixaForms.hidden = true;
-    return;
+// Depois de entrar: volta para a análise (se veio de lá) ou mostra "Olá, fulano"
+function depoisDeEntrar(usuario) {
+  Conta.atualizarMenu();
+  if (VOLTAR_PARA) {
+    location.href = VOLTAR_PARA;
+  } else {
+    mostrarLogado(usuario, true);
   }
-
-  // Quando a pessoa volta pelo link do e-mail de "Esqueci minha senha",
-  // o Supabase avisa com o evento PASSWORD_RECOVERY: mostramos o formulário de nova senha.
-  cliente.auth.onAuthStateChange(function (evento) {
-    if (evento === 'PASSWORD_RECOVERY') {
-      caixaForms.querySelector('.abas').hidden = true;
-      formEntrar.hidden = true;
-      formCriar.hidden = true;
-      caixaLogada.hidden = true;
-      caixaForms.hidden = false;
-      formNovaSenha.hidden = false;
-      formNovaSenha.querySelector('input').focus();
-    }
-  });
-
-  const sessao = await Conta.obterSessao();
-  if (sessao && formNovaSenha.hidden) mostrarLogado(sessao.user.email);
 }
 
-function mostrarLogado(email) {
-  textoEmail.textContent = email;
-  caixaForms.hidden = true;
-  caixaLogada.hidden = false;
+function mostrarLogado(usuario, moverFoco) {
+  document.querySelector('.logada-nome').textContent = primeiroNome(usuario.nome);
+  document.querySelector('.logada-email').textContent = usuario.email;
+  mostrarTela('logada', moverFoco);
+}
+
+// "Ana Carolina Alves" -> "Ana"
+function primeiroNome(nome) {
+  return nome.trim().split(/\s+/)[0];
+}
+
+// ---------- Começo: qual tela mostrar primeiro? ----------
+
+async function iniciar() {
+  // Arquivo aberto direto do computador: sem servidor, sem login
+  if (!Conta.loginDisponivel()) return mostrarTela('desligado');
+
+  // Veio pelo link de "Esqueci minha senha"
+  if (TOKEN) {
+    // Tira o token do endereço, para ele não ficar no histórico do navegador
+    history.replaceState(null, '', location.pathname);
+    return mostrarTela('nova-senha');
+  }
+
+  // Quem não parece logado já vê "Entrar" na hora, sem esperar o servidor
+  if (!Conta.pareceLogado()) mostrarTela(location.hash === '#criar' ? 'criar' : 'entrar');
+
+  const usuario = await Conta.obterSessao();
+  if (usuario) {
+    mostrarLogado(usuario);
+  } else if (Conta.pareceLogado()) {
+    // O cookie dizia "logado", mas a sessão acabou (ex.: o servidor foi reiniciado)
+    document.cookie = 'logado=; Path=/; Max-Age=0';
+    Conta.atualizarMenu();
+    mostrarTela('entrar');
+  }
 }
 
 iniciar();
@@ -152,7 +167,7 @@ iniciar();
 // ---------- Entrar ----------
 
 formEntrar.addEventListener('submit', async function (evento) {
-  evento.preventDefault();
+  evento.preventDefault(); // não deixa o navegador recarregar a página
   esconderMensagens();
   const email = formEntrar.email.value.trim();
   const senha = formEntrar.senha.value;
@@ -161,17 +176,22 @@ formEntrar.addEventListener('submit', async function (evento) {
   if (!senha) return erroNoCampo(formEntrar, formEntrar.senha, 'Escreva a sua senha.');
 
   const liberar = aguardar(formEntrar, 'Entrando…');
-  const { data, error } = await cliente.auth.signInWithPassword({ email: email, password: senha });
+  const resposta = await Conta.pedir('/api/entrar', { email: email, senha: senha });
   liberar();
 
-  if (error) return mostrarMensagem(formEntrar, traduzirErro(error), 'atencao');
-
-  if (VOLTAR_PARA) {
-    location.href = VOLTAR_PARA;
-  } else {
-    mostrarLogado(data.user.email);
-    document.querySelector('[data-conta]').textContent = 'Sua conta';
+  if (!resposta.ok) {
+    if (resposta.dados.erro === 'credenciais') {
+      // Marca os dois campos: não dizemos qual está errado (segurança)
+      formEntrar.email.setAttribute('aria-invalid', 'true');
+      formEntrar.senha.setAttribute('aria-invalid', 'true');
+      formEntrar.senha.value = '';
+      formEntrar.senha.focus();
+    }
+    return mostrarMensagem(formEntrar, textoDoErro(resposta), 'atencao');
   }
+
+  formEntrar.reset();
+  depoisDeEntrar(resposta.dados.usuario);
 });
 
 // ---------- Criar conta ----------
@@ -179,44 +199,50 @@ formEntrar.addEventListener('submit', async function (evento) {
 formCriar.addEventListener('submit', async function (evento) {
   evento.preventDefault();
   esconderMensagens();
+  const nome = formCriar.nome.value.trim();
   const email = formCriar.email.value.trim();
   const senha = formCriar.senha.value;
 
+  if (nome.length < 2) return erroNoCampo(formCriar, formCriar.nome, 'Escreva o seu nome.');
   if (!emailValido(email)) return erroNoCampo(formCriar, formCriar.email, 'Escreva o seu e-mail completo, por exemplo: nome@exemplo.com.');
   if (senha.length < 8) return erroNoCampo(formCriar, formCriar.senha, 'A senha precisa ter pelo menos 8 caracteres.');
 
   const liberar = aguardar(formCriar, 'Criando conta…');
-  const { data, error } = await cliente.auth.signUp({
-    email: email,
-    password: senha,
-    options: { emailRedirectTo: location.origin + '/entrar.html' }
-  });
+  const resposta = await Conta.pedir('/api/criar-conta', { nome: nome, email: email, senha: senha });
   liberar();
 
-  if (error) return mostrarMensagem(formCriar, traduzirErro(error), 'atencao');
-
-  if (data.session) {
-    // Supabase configurado sem confirmação de e-mail: já entrou
-    if (VOLTAR_PARA) location.href = VOLTAR_PARA;
-    else mostrarLogado(data.user.email);
-  } else {
-    formCriar.reset();
-    mostrarMensagem(formCriar, 'Conta criada. Enviamos um link para ' + email + '. Abra o e-mail e toque no link para ativar a conta.', 'ok');
+  if (!resposta.ok) {
+    if (resposta.dados.erro === 'email-existe') return erroNoCampo(formCriar, formCriar.email, textoDoErro(resposta));
+    return mostrarMensagem(formCriar, textoDoErro(resposta), 'atencao');
   }
+
+  // Conta criada: o servidor já deixou a pessoa logada
+  formCriar.reset();
+  Conta.atualizarMenu();
+  if (VOLTAR_PARA) return (location.href = VOLTAR_PARA);
+  document.querySelector('.criada-nome').textContent = primeiroNome(resposta.dados.usuario.nome);
+  document.querySelector('.criada-email').textContent = resposta.dados.usuario.email;
+  mostrarTela('criada', true);
 });
 
 // ---------- Esqueci minha senha ----------
 
-document.querySelector('.esqueci').addEventListener('click', async function () {
+formEsqueci.addEventListener('submit', async function (evento) {
+  evento.preventDefault();
   esconderMensagens();
-  const email = formEntrar.email.value.trim();
-  if (!emailValido(email)) {
-    return erroNoCampo(formEntrar, formEntrar.email, 'Escreva o seu e-mail no campo acima e toque de novo em "Esqueci minha senha".');
-  }
-  const { error } = await cliente.auth.resetPasswordForEmail(email, { redirectTo: location.origin + '/entrar.html' });
-  if (error) return mostrarMensagem(formEntrar, traduzirErro(error), 'atencao');
-  mostrarMensagem(formEntrar, 'Se existir uma conta com esse e-mail, enviamos um link para criar uma nova senha.', 'ok');
+  const email = formEsqueci.email.value.trim();
+  if (!emailValido(email)) return erroNoCampo(formEsqueci, formEsqueci.email, 'Escreva o seu e-mail completo, por exemplo: nome@exemplo.com.');
+
+  const liberar = aguardar(formEsqueci, 'Enviando…');
+  const resposta = await Conta.pedir('/api/esqueci', { email: email });
+  liberar();
+  if (!resposta.ok) return mostrarMensagem(formEsqueci, textoDoErro(resposta), 'atencao');
+
+  document.querySelector('.enviado-email').textContent = email;
+  mostrarTela('enviado', true);
 });
+
+// ---------- Nova senha (link do "Esqueci") ----------
 
 formNovaSenha.addEventListener('submit', async function (evento) {
   evento.preventDefault();
@@ -225,22 +251,19 @@ formNovaSenha.addEventListener('submit', async function (evento) {
   if (senha.length < 8) return erroNoCampo(formNovaSenha, formNovaSenha.senha, 'A senha precisa ter pelo menos 8 caracteres.');
 
   const liberar = aguardar(formNovaSenha, 'Salvando…');
-  const { data, error } = await cliente.auth.updateUser({ password: senha });
+  const resposta = await Conta.pedir('/api/nova-senha', { token: TOKEN, senha: senha });
   liberar();
-  if (error) return mostrarMensagem(formNovaSenha, traduzirErro(error), 'atencao');
+  if (!resposta.ok) return mostrarMensagem(formNovaSenha, textoDoErro(resposta), 'atencao');
 
-  formNovaSenha.hidden = true;
-  caixaForms.querySelector('.abas').hidden = false;
-  mostrarLogado(data.user.email);
+  formNovaSenha.reset();
+  mostrarTela('entrar', true);
+  mostrarMensagem(formEntrar, 'Senha nova salva. Agora entre com ela.', 'ok');
 });
 
 // ---------- Sair ----------
 
 document.querySelector('.conta-sair').addEventListener('click', async function () {
-  await cliente.auth.signOut();
-  document.querySelector('[data-conta]').textContent = 'Entrar';
-  caixaLogada.hidden = true;
-  caixaForms.hidden = false;
-  escolherAba(abaEntrar);
-  formEntrar.email.focus();
+  await Conta.pedir('/api/sair', {});
+  Conta.atualizarMenu();
+  mostrarTela('entrar', true);
 });

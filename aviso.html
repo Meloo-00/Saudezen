@@ -121,7 +121,7 @@
           <section class="aviso-bloco" id="seus-dados" aria-labelledby="titulo-dados">
             <h2 id="titulo-dados">Seus dados</h2>
             <p><strong>Seus exames nunca ficam guardados.</strong> O arquivo passa pelo site só para ser enviado à IA e gerar a explicação. O resultado some quando você fecha a página.</p>
-            <p><strong>A conta guarda só o seu e-mail.</strong> Ela existe para limitar o uso da IA, que é gratuita. A senha fica protegida no serviço de login (Supabase), e ninguém da equipe consegue vê-la.</p>
+            <p><strong>A conta guarda só o seu nome e e-mail.</strong> Ela existe para limitar o uso da IA, que é gratuita. A senha é guardada embaralhada (em "hash"), de um jeito que ninguém da equipe consegue ver. Também registramos a data das tentativas de entrar, para bloquear quem tenta adivinhar senhas.</p>
             <p><strong>A IA é do Google (Gemini), no plano gratuito.</strong> Nesse plano, o Google pode usar o que é enviado para melhorar os serviços dele, e pessoas podem revisar esse conteúdo.</p>
             <h3>Por isso, não envie exames com dados pessoais</h3>
             <ul>
@@ -170,16 +170,19 @@
             <li><a href="aviso.html">Aviso</a></li>
           </ul>
         </nav>
-        <!-- TROCAR: confira se a equipe e o e-mail são os mesmos do ExamIA -->
+        <!-- Telefone fictício (protótipo): sem link de ligar, para ninguém ligar para um número de verdade -->
         <div>
-          <h2>Equipe</h2>
-          <ul>
-            <li>Ana Carolina Guimarães Alves</li>
-            <li>David Alexandre Ferreira Gonçalves</li>
-            <li>Eduardo Melo Gimenes</li>
-            <li>Fabiano Andrade Furlan Junior</li>
+          <h2>Contato</h2>
+          <ul class="rodape-contatos">
+            <li>
+              <svg class="icone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+              <span><span class="rotulo">E-mail</span> <a href="mailto:rm98736@estudante.fieb.edu.br">rm98736@estudante.fieb.edu.br</a></span>
+            </li>
+            <li>
+              <svg class="icone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233 14 14 0 0 0 6.392 6.384"/></svg>
+              <span><span class="rotulo">Telefone</span> (11) 4000-0000</span>
+            </li>
           </ul>
-          <p><a href="mailto:rm98736@estudante.fieb.edu.br">rm98736@estudante.fieb.edu.br</a></p>
         </div>
       </div>
       <p class="rodape-aviso"><strong>O Saudezen não faz diagnóstico</strong> e não substitui a consulta com um médico. Em caso de emergência, ligue para o SAMU no <a href="tel:192">192</a>.</p>
