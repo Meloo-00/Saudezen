@@ -736,7 +736,11 @@ main { display: block; }
 /* Barra enchendo: só quando o carrossel está rodando (o JS coloca a classe "rodando").
    Quando a barra termina de encher, o JS passa para a próxima notícia. */
 .carrossel.rodando .carrossel-botao[aria-current] .carrossel-barra > span {
-  animation: encher-barra var(--tempo-noticia, 8s) linear;
+  /* Escrito por partes de propósito: o atalho "animation:" também zera o animation-play-state,
+     e como esta regra tem mais peso, ela desfazia a pausa da regra de baixo. */
+  animation-name: encher-barra;
+  animation-duration: var(--tempo-noticia, 8s);
+  animation-timing-function: linear;
 }
 @keyframes encher-barra { from { transform: scaleX(0); } to { transform: scaleX(1); } }
 
