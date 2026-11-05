@@ -103,7 +103,9 @@ Site de saúde em linguagem simples. Projeto escolar (protótipo), sucessor do E
       nas procedures + SELECT no LogLogin). DB_USUARIO/DB_SENHA salvas nas variáveis do usuário do Windows.
       Testado de verdade: criar, duplicado, senha errada, entrar, esqueci + nova senha.
 - [ ] SSMS (opcional, para mostrar as tabelas na apresentação)
-- [ ] Testar a análise com GEMINI_API_KEY no computador
+- [x] Análise testada de verdade (05/11/2026): GEMINI_API_KEY (chave do ExamIA) nas variáveis do usuário;
+      login + IA + regra dos 10% conferidos. O Gemini às vezes responde 503 (sobrecarga): o servidor já
+      tenta os modelos reserva, mas pode falhar e a pessoa precisa tentar de novo.
 - [x] Rodapé: nomes da equipe trocados por "Contato" (e-mail + telefone FICTÍCIO (11) 4000-0000, sem link de ligar) em 05/11/2026
 - [ ] Data da apresentação (ainda não informada)
 - [x] Primeiro commit (20/10/2026)
