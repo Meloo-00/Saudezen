@@ -112,7 +112,12 @@ rotas.post('/criar-conta', async function (req, res) {
       senha_hash: [sql.VarChar(255), hash]
     });
     const id = Number(linhas[0].id_usuario);
-    criarSessao(res, { id: id, nome: nome, email: email }); // já entra na conta nova
+    // Quem cria a conta já entra nela: isso também fica registrado no LogLogin
+    await procedure('sp_RegistrarLogin', {
+      email: [sql.VarChar(150), email],
+      sucesso: [sql.Bit, true]
+    });
+    criarSessao(res, { id: id, nome: nome, email: email });
     res.json({ usuario: { nome: nome, email: email } });
   } catch (erro) {
     // A procedure avisa com RAISERROR quando o e-mail já existe
