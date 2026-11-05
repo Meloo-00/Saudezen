@@ -1,11 +1,9 @@
-# Originais das imagens. O site usa só as versões geradas (*-site.png, celula-oliva.png).
-imagens/microscopio.png
-imagens/sangue.png
-imagens/celula-removebg-preview.png
-
-# Chaves e dependências: nunca vão para o GitHub
-.env
-.env.local
-.env*.local
+# Bibliotecas do Node: o "npm install" baixa de novo a partir do package.json
 node_modules/
-.vercel/
+
+# Senhas e chaves nunca vão para o GitHub (ficam nas variáveis de ambiente do Windows)
+.env
+.env*.local
+
+# Anotações de trabalho do Claude (ficam só neste computador)
+CLAUDE.md

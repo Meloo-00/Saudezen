@@ -70,6 +70,7 @@ body {
   font-size: var(--t-base);
   line-height: 1.6;
   -webkit-tap-highlight-color: rgba(61, 90, 50, 0.15);
+  position: relative;   /* referência para as células decorativas (.decoracao) */
 }
 
 h1, h2, h3, h4, p, ul, ol, dl, dd, figure { margin: 0; }
@@ -797,6 +798,9 @@ main { display: block; }
    Clara de propósito: o verde-escuro já aparece logo acima, na tradução do topo. */
 
 .faixa-aviso {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;   /* a célula decorativa fica atrás do texto, mas dentro da faixa */
   display: grid;
   gap: var(--e-5);
   padding: var(--e-7) var(--e-5);
@@ -1119,7 +1123,6 @@ main { display: block; }
 .mensagem svg { width: 24px; height: 24px; flex-shrink: 0; margin-top: 1px; }
 .mensagem-atencao { background: var(--ambar-fundo); color: var(--ambar-texto); }
 .mensagem-ok { background: var(--broto); color: var(--folha-escura); }
-.mensagem-info { background: var(--areia); color: var(--tinta); font-weight: 400; }
 
 /* ---------- Entrar ---------- */
 
@@ -1253,7 +1256,7 @@ main { display: block; }
 .envio h2, .resultado h2 { font-size: var(--t-h2); font-weight: 800; letter-spacing: -0.02em; }
 
 .passos-envio { list-style: none; padding: 0; display: grid; gap: var(--e-6); margin-top: var(--e-5); }
-.passo-envio { display: grid; grid-template-columns: 40px 1fr; gap: var(--e-4); }
+.passo-envio { display: grid; grid-template-columns: 40px 1fr; gap: var(--e-4); row-gap: var(--e-3); align-items: start; }
 /* Aqui a numeração faz sentido: é uma sequência de verdade (1. escolher, 2. confirmar, 3. analisar) */
 .passo-num {
   display: grid;
@@ -1269,7 +1272,6 @@ main { display: block; }
 
 /* Celular: o número fica ao lado só do título; o resto usa a largura toda
    (display: contents faz os filhos da div entrarem direto no grid do <li>) */
-.passo-envio { row-gap: var(--e-3); align-items: start; }
 .passo-envio > div { display: contents; }
 .passo-envio > div > :not(h3) { grid-column: 1 / -1; min-width: 0; }
 
@@ -1629,8 +1631,6 @@ main { display: block; }
    Ficam atrás de todo o conteúdo e são cortadas na borda da tela.
    A cor das linhas já vem na própria imagem (#DCE2D3, um pouco mais escura que o fundo). */
 
-body { position: relative; }
-
 .decoracao {
   position: absolute;
   inset: 0;
@@ -1673,7 +1673,6 @@ body { position: relative; }
 }
 
 /* Célula dentro da faixa clara do aviso (Home), atrás do texto */
-.faixa-aviso { position: relative; overflow: hidden; isolation: isolate; }
 .faixa-aviso .celula { z-index: -1; width: 320px; left: -90px; bottom: -110px; --giro: 22deg; --tempo: 26s; animation-delay: -9s; }
 @media (min-width: 760px) {
   .faixa-aviso .celula { width: 440px; left: -60px; bottom: -150px; }

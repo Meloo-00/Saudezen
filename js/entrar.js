@@ -15,6 +15,9 @@ const VOLTAR_PARA = parametros.get('voltar') === 'analise' ? 'analise.html' : nu
 // Token do link de "Esqueci minha senha" (entrar.html?token=...)
 const TOKEN = parametros.get('token');
 
+// Mensagem usada em vários formulários
+const MSG_EMAIL = 'Escreva o seu e-mail completo, por exemplo: nome@exemplo.com.';
+
 const ICONE_ATENCAO = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>';
 const ICONE_OK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>';
 
@@ -90,7 +93,7 @@ function textoDoErro(resposta) {
     case 'email-existe': return 'Já existe uma conta com esse e-mail. Entre com ela ou use "Esqueci minha senha".';
     case 'nome':         return 'Escreva o seu nome.';
     case 'email':
-    case 'dados':        return 'Escreva o seu e-mail completo, por exemplo: nome@exemplo.com.';
+    case 'dados':        return MSG_EMAIL;
     case 'senha':        return 'A senha precisa ter pelo menos 8 caracteres.';
     case 'token':        return 'Este link não vale mais: passou de 1 hora ou já foi usado. Peça outro abaixo.';
     case 'banco':        return 'O banco de dados não está respondendo. Tente de novo em alguns minutos.';
@@ -172,7 +175,7 @@ formEntrar.addEventListener('submit', async function (evento) {
   const email = formEntrar.email.value.trim();
   const senha = formEntrar.senha.value;
 
-  if (!emailValido(email)) return erroNoCampo(formEntrar, formEntrar.email, 'Escreva o seu e-mail completo, por exemplo: nome@exemplo.com.');
+  if (!emailValido(email)) return erroNoCampo(formEntrar, formEntrar.email, MSG_EMAIL);
   if (!senha) return erroNoCampo(formEntrar, formEntrar.senha, 'Escreva a sua senha.');
 
   const liberar = aguardar(formEntrar, 'Entrando…');
@@ -204,7 +207,7 @@ formCriar.addEventListener('submit', async function (evento) {
   const senha = formCriar.senha.value;
 
   if (nome.length < 2) return erroNoCampo(formCriar, formCriar.nome, 'Escreva o seu nome.');
-  if (!emailValido(email)) return erroNoCampo(formCriar, formCriar.email, 'Escreva o seu e-mail completo, por exemplo: nome@exemplo.com.');
+  if (!emailValido(email)) return erroNoCampo(formCriar, formCriar.email, MSG_EMAIL);
   if (senha.length < 8) return erroNoCampo(formCriar, formCriar.senha, 'A senha precisa ter pelo menos 8 caracteres.');
 
   const liberar = aguardar(formCriar, 'Criando conta…');
@@ -231,7 +234,7 @@ formEsqueci.addEventListener('submit', async function (evento) {
   evento.preventDefault();
   esconderMensagens();
   const email = formEsqueci.email.value.trim();
-  if (!emailValido(email)) return erroNoCampo(formEsqueci, formEsqueci.email, 'Escreva o seu e-mail completo, por exemplo: nome@exemplo.com.');
+  if (!emailValido(email)) return erroNoCampo(formEsqueci, formEsqueci.email, MSG_EMAIL);
 
   const liberar = aguardar(formEsqueci, 'Enviando…');
   const resposta = await Conta.pedir('/api/esqueci', { email: email });
