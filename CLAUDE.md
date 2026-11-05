@@ -119,7 +119,7 @@ Site de saúde em linguagem simples. Projeto escolar (protótipo), sucessor do E
      Pancreatite, Diverticulite, Síndrome do intestino irritável, Colite, Virose, Foliculite, Faringite,
      Má digestão, Escoliose, Esporão de calcâneo, Tendinite, Gota, Anorexia, Bulimia.
    - Viraram outro nome de uma doença: Reumatismo, Eczema, Enfisema, Nervo ciático, Intolerância ao glúten, Vaginite.
-   - Fascite plantar entrou no lugar do Esporão (é parecida, mas o usuário não pediu: confirmar se fica).
+   - Fascite plantar entrou no lugar do Esporão (confirmado pelo usuário em 05/11/2026: fica).
 2. Pontos fracos que eu (Claude) apontei e ainda estão abertos:
    - (Resolvido 05/11/2026) No celular, o carrossel agora tem setas + "1 de 5 · A seguir: <tema>" embaixo da notícia (`.carrossel-nav`; no computador fica escondido, a lista de manchetes já mostra tudo).
    - Ícones das notícias são provisórios: ilustrações 3D por tema (como sangue/microscópio)
