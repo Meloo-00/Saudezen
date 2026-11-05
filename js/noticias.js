@@ -13,6 +13,9 @@ if (carrossel) {
   const lista       = carrossel.querySelector('.carrossel-lista');
   const botaoPausa  = carrossel.querySelector('.carrossel-pausa');
   const areaNoticias = carrossel.querySelector('.carrossel-slides');
+  const navegacao   = carrossel.querySelector('.carrossel-nav');
+  const textoNumero = carrossel.querySelector('.carrossel-numero');
+  const textoSeguinte = carrossel.querySelector('.carrossel-seguinte');
 
   const ICONE_PAUSAR   = '<rect x="14" y="4" width="4" height="16" rx="1"/><rect x="6" y="4" width="4" height="16" rx="1"/>';
   const ICONE_CONTINUAR = '<polygon points="6 3 20 12 6 21 6 3"/>';
@@ -29,12 +32,27 @@ if (carrossel) {
       if (i === indice) botao.setAttribute('aria-current', 'true');
       else botao.removeAttribute('aria-current');
     });
+    // Contador do celular: "2 de 5 · A seguir: Vírus respiratórios"
+    const proxima = (indice + 1) % noticias.length;
+    textoNumero.textContent = (indice + 1) + ' de ' + noticias.length;
+    textoSeguinte.textContent = 'A seguir: ' + botoes[proxima].querySelector('.carrossel-botao-tema').textContent;
+  }
+
+  // Anda "passo" notícias: +1 = próxima, -1 = anterior (dando a volta no fim e no começo)
+  function andar(passo) {
+    const total = noticias.length;
+    mostrar((atual + passo + total) % total);
   }
 
   // A barra encheu: vai para a próxima (depois da última, volta para a primeira)
   carrossel.addEventListener('animationend', function (evento) {
     if (evento.animationName !== 'encher-barra') return; // ignora as outras animações
-    mostrar((atual + 1) % noticias.length);
+    andar(1);
+  });
+
+  // Setas do celular
+  navegacao.querySelectorAll('.carrossel-seta').forEach(function (seta) {
+    seta.addEventListener('click', function () { andar(Number(seta.dataset.passo)); });
   });
 
   // Tocar numa manchete da lista mostra aquela notícia (e a barra dela começa do zero)
@@ -65,8 +83,7 @@ if (carrossel) {
     const distancia = evento.changedTouches[0].clientX - inicioDoToque;
     inicioDoToque = null;
     if (Math.abs(distancia) < 50) return; // foi só um toque, não um arrasto
-    const total = noticias.length;
-    mostrar(distancia < 0 ? (atual + 1) % total : (atual - 1 + total) % total);
+    andar(distancia < 0 ? 1 : -1);
   });
 
   // Só conta o tempo quando o carrossel está na tela.
@@ -81,8 +98,9 @@ if (carrossel) {
     carrossel.classList.remove('fora-da-tela');
   }
 
-  // Liga o carrossel: mostra a lista e o botão (sem JS, eles ficam escondidos)
+  // Liga o carrossel: mostra a lista, as setas e o botão (sem JS, eles ficam escondidos)
   lista.hidden = false;
+  navegacao.hidden = false;
   botaoPausa.hidden = false;
   mostrar(0);
   carrossel.classList.add('rodando');

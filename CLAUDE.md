@@ -121,7 +121,7 @@ Site de saúde em linguagem simples. Projeto escolar (protótipo), sucessor do E
    - Viraram outro nome de uma doença: Reumatismo, Eczema, Enfisema, Nervo ciático, Intolerância ao glúten, Vaginite.
    - Fascite plantar entrou no lugar do Esporão (é parecida, mas o usuário não pediu: confirmar se fica).
 2. Pontos fracos que eu (Claude) apontei e ainda estão abertos:
-   - Carrossel esconde 4 das 5 notícias; no celular só as barrinhas indicam que há mais.
+   - (Resolvido 05/11/2026) No celular, o carrossel agora tem setas + "1 de 5 · A seguir: <tema>" embaixo da notícia (`.carrossel-nav`; no computador fica escondido, a lista de manchetes já mostra tudo).
    - Ícones das notícias são provisórios: ilustrações 3D por tema (como sangue/microscópio)
      ficariam melhores, se o grupo conseguir as imagens.
    - Dicas "Para você" e os links para Diabetes/Pressão alta nas notícias foram escritos pelo
