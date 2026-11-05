@@ -22,5 +22,5 @@ Precisa de **Node.js** e **SQL Server** instalados.
 1. No SQL Server, rode `banco/bd_login.sql` e depois `banco/permissoes-site.sql`.
 2. Crie o login do site no SQL Server e coloque nas variáveis de ambiente do Windows:
    `DB_USUARIO`, `DB_SENHA` e `GEMINI_API_KEY` (chave da IA do Google).
-3. Na pasta do projeto: `npm install` e depois `npm start`.
-4. Abra http://localhost:3000
+3. Dê dois cliques em `iniciar.bat`: ele instala o que falta, liga o site e abre http://localhost:3000.
+   Para desligar, feche a janela preta.
